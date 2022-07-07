@@ -1,0 +1,224 @@
+﻿<Window x:Class="ToDoApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:ToDoApp.Helpers.Converters"
+        xmlns:attached="clr-namespace:ToDoApp.Helpers.Attached"
+        mc:Ignorable="d"
+        Title="Vlv Todo app" 
+        Height="450" 
+        Width="800"
+        Background="#FAFAFF"
+        Topmost="True">
+
+    <Window.Resources>
+        <converters:StringToBrushConverter x:Key="StringToBrushConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+
+    <Grid Margin="10 15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    Margin="0 5">
+            <Button Content="Create"
+                    Style="{StaticResource DefaultButtonStyle}"
+                    Command="{Binding AddNewTodoItemCommand}"/>
+
+            <Button Content="Filter by completeness"
+                    Margin="5 0"
+                    Style="{StaticResource DefaultButtonStyle}"
+                    Command="{Binding FilterTodoItemsCommand}"
+                    CommandParameter="1"/>
+
+            <Button Content="Clear filteres"
+                    Style="{StaticResource DefaultButtonStyle}"
+                    Command="{Binding FilterTodoItemsCommand}"
+                    CommandParameter="0"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            
+            <ListBox ItemsSource="{Binding FilteredTodoModels}"
+                     BorderThickness="0"
+                     Background="#FAFAFF"
+                     VerticalAlignment="Stretch"
+                     ScrollViewer.CanContentScroll="False"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Margin" Value="0 3"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Background" Value="{Binding BgColorString, Converter={StaticResource StringToBrushConverter}}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border x:Name="Part_Border"
+                                        Padding="2"
+                                        SnapsToDevicePixels="True"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="7">
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <!--Triggers-->
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="BorderBrush" Value="#3b7097" TargetName="Part_Border"/>
+                                            <!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>-->
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>-->
+                                            <Setter Property="BorderBrush" Value="{StaticResource AppleGray2ColorBrush}" TargetName="Part_Border"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <!--BorderBrush="{Binding BgColorString, Converter={StaticResource StringToBrushConverter}}"-->
+                        <Border BorderThickness="0 0 3 0"
+                                Padding="7 3">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                
+                                <!-- NAME AND TIME -->
+                                <Grid>
+                                    <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Stretch">
+                                        <!--<TextBox Text="{Binding Name}"
+                                                 Style="{StaticResource DefaultTexBoxStyle}"
+                                                 MinWidth="100"
+                                                 attached:TextBoxAttachedProperties.BindingOnKeyUp="True"
+                                                 Margin="0 0 10 0"
+                                                 FontSize="14"/>-->
+                                        <TextBlock>
+                                            <!--<Run Text="Created at:"/>-->
+                                            <Run FontSize="14" 
+                                                 Foreground="{StaticResource AppleGray2ColorBrush}"
+                                                 Text="{Binding CreatedTime, StringFormat='{}{0:dd.MM.yyyy, HH:mm}'}"/>
+                                        </TextBlock>
+
+                                        <TextBlock Margin="10 0 0 0"
+                                                   Foreground="{StaticResource AppleGray2ColorBrush}"
+                                                   VerticalAlignment="Center"
+                                                   Visibility="{Binding IsDone, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Run FontSize="12" 
+                                                 Text="{Binding DoneTime, StringFormat='{}{0:dd.MM.yyyy, HH:mm}'}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Grid>
+
+                                <!-- REMOVE ITEM BUTTON -->
+                                <Grid Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Button Command="{Binding DataContext.SetTodoItemAsDoneCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                            CommandParameter="{Binding}"
+                                            ToolTip="Toggle">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <!--<Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDone}" Value="true">
+                                                        <Setter Property="Background" Value="#fff"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>-->
+                                            </Style>
+                                        </Button.Style>
+
+                                        <Button.Content>
+                                            <Image Source="{StaticResource CheckedImage}"/>
+                                        </Button.Content>
+                                    </Button>
+
+                                    <Button Style="{StaticResource DangerButtonStyle}"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            Command="{Binding DataContext.RemoveTodoItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                            CommandParameter="{Binding}"
+                                            ToolTip="Delete">
+                                        <Button.Content>
+                                            <Grid>
+                                                <Image Source="{StaticResource CrossImage}"/>
+                                                <!--<TextBlock Text="x"/>-->
+                                            </Grid>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>
+
+                                <!-- DESCRIPTION OF TODO -->
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Text="{Binding Description}"
+                                             AcceptsReturn="True"
+                                             TextWrapping="Wrap"
+                                             attached:TextBoxAttachedProperties.BindingOnKeyUp="True"
+                                             FontSize="14"
+                                             >
+                                        <TextBox.Style>
+                                            <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTexBoxStyle}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDone}" Value="true">
+                                                        <Setter Property="Opacity" Value="0.3"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Style>
+                                    </TextBox>
+                                </Grid>
+
+                                <!-- TOGGLE COMPLETENESS -->
+                                <!--<Grid Grid.Row="2" Grid.Column="1" Margin="5 5 5 0">
+                                    <Button Command="{Binding DataContext.SetTodoItemAsDoneCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                            CommandParameter="{Binding}">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                --><!--<Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDone}" Value="true">
+                                                        <Setter Property="Background" Value="#fff"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>--><!--
+                                            </Style>
+                                        </Button.Style>
+
+                                        <Button.Content>
+                                            <Image Source="{StaticResource CheckedImage}"/>
+                                        </Button.Content>
+                                    </Button>
+                                </Grid>-->
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Grid>
+    
+</Window>

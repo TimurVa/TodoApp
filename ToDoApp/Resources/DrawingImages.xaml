@@ -1,0 +1,43 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <DrawingImage x:Key="CheckedImage">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+                <GeometryDrawing Geometry="F1 M24,24z M0,0z M21.25,12C21.25,6.89137 17.1086,2.75 12,2.75 6.89137,2.75 2.75,6.89137 2.75,12 2.75,17.1086 6.89137,21.25 12,21.25 17.1086,21.25 21.25,17.1086 21.25,12z">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FF309F97" Thickness="1.5" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
+                    </GeometryDrawing.Pen>
+                </GeometryDrawing>
+                <GeometryDrawing Geometry="F1 M24,24z M0,0z M9,12L11,14 15,10">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FF309F97" Thickness="1.5" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+                    </GeometryDrawing.Pen>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="CrossImage">
+        <DrawingImage.Drawing>
+            <DrawingGroup ClipGeometry="M0,0 V24 H24 V0 H0 Z">
+                <GeometryDrawing Geometry="F1 M24,24z M0,0z M14,10L10,14">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FFF56570" Thickness="1.5" StartLineCap="Round" EndLineCap="Round" LineJoin="Miter" MiterLimit="1" />
+                    </GeometryDrawing.Pen>
+                </GeometryDrawing>
+                <GeometryDrawing Geometry="F1 M24,24z M0,0z M14,14L10,10">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FFF56570" Thickness="1.5" StartLineCap="Round" EndLineCap="Round" LineJoin="Miter" MiterLimit="1" />
+                    </GeometryDrawing.Pen>
+                </GeometryDrawing>
+                <GeometryDrawing Geometry="F1 M24,24z M0,0z M21.25,12C21.25,6.89137 17.1086,2.75 12,2.75 6.89137,2.75 2.75,6.89137 2.75,12 2.75,17.1086 6.89137,21.25 12,21.25 17.1086,21.25 21.25,17.1086 21.25,12z">
+                    <GeometryDrawing.Pen>
+                        <Pen Brush="#FFF56570" Thickness="1.5" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
+                    </GeometryDrawing.Pen>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+</ResourceDictionary>
