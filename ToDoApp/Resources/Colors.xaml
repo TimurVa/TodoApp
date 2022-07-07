@@ -1,0 +1,87 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+<Color x:Key="ApplePinkColor">#ff2d55</Color>
+    <SolidColorBrush x:Key="ApplePinkColorBrush" Color="{StaticResource ApplePinkColor}"/>
+    
+    <Color x:Key="ApplePurpleColor">#5e5ce6</Color>
+    <SolidColorBrush x:Key="ApplePurpleColorBrush" Color="{StaticResource ApplePurpleColor}"/>
+
+    <Color x:Key="AppleOrangeColor">#ff9500</Color>
+    <SolidColorBrush x:Key="AppleOrangeColorBrush" Color="{StaticResource AppleOrangeColor}"/>
+
+    <Color x:Key="AppleYellowColor">#ffcc00</Color>
+    <SolidColorBrush x:Key="AppleYellowColorBrush" Color="{StaticResource AppleYellowColor}"/>
+
+    <Color x:Key="AppleRedColor">#ff3b30</Color>
+    <SolidColorBrush x:Key="AppleRedColorBrush" Color="{StaticResource AppleRedColor}"/>
+
+    <Color x:Key="AppleTeaBlueColor">#5ac8fa</Color>
+    <SolidColorBrush x:Key="AppleTeaBlueColorBrush" Color="{StaticResource AppleTeaBlueColor}"/>
+
+    <Color x:Key="AppleBlueColor">#007aff</Color>
+    <SolidColorBrush x:Key="AppleBlueColorBrush" Color="{StaticResource AppleBlueColor}"/>
+
+    <Color x:Key="AppleGreenColor">#4cd964</Color>
+    <SolidColorBrush x:Key="AppleGreenColorBrush" Color="{StaticResource AppleGreenColor}"/>
+    
+    
+    <Color x:Key="AppleDarkPinkColor">#ff443a</Color>
+    <SolidColorBrush x:Key="AppleDarkPinkColorBrush" Color="{StaticResource AppleDarkPinkColor}"/>
+
+    <Color x:Key="AppleDarkPurpleColor">#5856d6</Color>
+    <SolidColorBrush x:Key="AppleDarkPurpleColorBrush" Color="{StaticResource AppleDarkPurpleColor}"/>
+
+    <Color x:Key="AppleDarkOrangeColor">#ff9d0a</Color>
+    <SolidColorBrush x:Key="AppleDarkOrangeColorBrush" Color="{StaticResource AppleDarkOrangeColor}"/>
+
+    <Color x:Key="AppleDarkYellowColor">#ffd60a</Color>
+    <SolidColorBrush x:Key="AppleDarkYellowColorBrush" Color="{StaticResource AppleDarkYellowColor}"/>
+
+    <Color x:Key="AppleDarkRedColor">#ff443a</Color>
+    <SolidColorBrush x:Key="AppleDarkRedColorBrush" Color="{StaticResource AppleDarkRedColor}"/>
+
+    <Color x:Key="AppleDarkTeaBlueColor">#40c8e0</Color>
+    <SolidColorBrush x:Key="AppleDarkTeaBlueColorBrush" Color="{StaticResource AppleDarkTeaBlueColor}"/>
+
+    <Color x:Key="AppleDarkBlueColor">#0a7aff</Color>
+    <SolidColorBrush x:Key="AppleDarkBlueColorBrush" Color="{StaticResource AppleDarkBlueColor}"/>
+
+    <Color x:Key="AppleDarkGreenColor">#30d158</Color>
+    <SolidColorBrush x:Key="AppleDarkGreenColorBrush" Color="{StaticResource AppleDarkGreenColor}"/>
+
+    
+    <Color x:Key="AppleMostLightGrayColor">#8e8e93</Color>
+    <SolidColorBrush x:Key="AppleMostLightGrayColorBrush" Color="{StaticResource AppleMostLightGrayColor}"/>
+
+    <Color x:Key="AppleLightGrayColor">#636366</Color>
+    <SolidColorBrush x:Key="AppleLightGrayColorBrush" Color="{StaticResource AppleLightGrayColor}"/>
+
+    <Color x:Key="AppleGrayColor">#48484a</Color>
+    <SolidColorBrush x:Key="AppleGrayColorBrush" Color="{StaticResource AppleGrayColor}"/>
+
+    <Color x:Key="AppleDarkGrayColor">#3a3a3c</Color>
+    <SolidColorBrush x:Key="AppleDarkGrayColorBrush" Color="{StaticResource AppleDarkGrayColor}"/>
+
+    <Color x:Key="AppleDarkerGrayColor">#2c2c2e</Color>
+    <SolidColorBrush x:Key="AppleDarkerGrayColorBrush" Color="{StaticResource AppleDarkerGrayColor}"/>
+
+    <Color x:Key="AppleMostDarkColor">#1c1c1e</Color>
+    <SolidColorBrush x:Key="AppleMostDarkColorBrush" Color="{StaticResource AppleMostDarkColor}"/>
+
+    <Color x:Key="AppleGray2Color">#aeaeb2</Color>
+    <SolidColorBrush x:Key="AppleGray2ColorBrush" Color="{StaticResource AppleGray2Color}"/>
+
+    <Color x:Key="AppleGray3Color">#c7c7cc</Color>
+    <SolidColorBrush x:Key="AppleGray3ColorBrush" Color="{StaticResource AppleGray3Color}"/>
+    
+    <Color x:Key="AppleGray4Color">#D1D1D6</Color>
+    <SolidColorBrush x:Key="AppleGray4ColorBrush" Color="{StaticResource AppleGray4Color}"/>
+    
+    <Color x:Key="AppleGray5Color">#d8d8dc</Color>
+    <SolidColorBrush x:Key="AppleGray5ColorBrush" Color="{StaticResource AppleGray5Color}"/>
+    
+    <Color x:Key="AppleGray6Color">#ebebf0</Color>
+    <SolidColorBrush x:Key="AppleGray6ColorBrush" Color="{StaticResource AppleGray6Color}"/>
+    
+</ResourceDictionary>
