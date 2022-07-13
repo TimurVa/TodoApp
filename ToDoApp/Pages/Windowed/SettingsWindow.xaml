@@ -1,0 +1,76 @@
+﻿<Window x:Class="ToDoApp.Pages.Windowed.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ToDoApp.Pages.Windowed"
+        mc:Ignorable="d"
+        Title="Settings" 
+        Height="500"
+        Width="450"
+        Topmost="True"
+        Background="{DynamicResource MainBgColorBrush}">
+    
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"
+              Margin="0 10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <TextBlock Text="Top most window"
+                           Style="{StaticResource HeaderTextBlockStyle}"/>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <ToggleButton IsChecked="{Binding IsTopMost}"
+                              Style="{StaticResource ToggleButtonBaseStyle}">
+                    
+                </ToggleButton>
+            </Grid>
+            
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="100"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Theme"
+                       Style="{StaticResource HeaderTextBlockStyle}"/>
+
+            <StackPanel Orientation="Vertical"
+                        Grid.Row="1">
+
+                <Separator/>
+
+                <RadioButton IsChecked="{Binding IsLightTheme, FallbackValue=true}"
+                             VerticalContentAlignment="Center"
+                             Style="{StaticResource RadioButtonBaseStyle}">
+                    <RadioButton.Content>
+                        <TextBlock Text="Light"
+                                   Style="{StaticResource HeaderTextBlockStyle}"/>
+                    </RadioButton.Content>
+                </RadioButton>
+
+                <RadioButton IsChecked="{Binding IsDarkTheme}"
+                             VerticalContentAlignment="Center"
+                             Style="{StaticResource RadioButtonBaseStyle}">
+                    <RadioButton.Content>
+                        <TextBlock Text="Dark"
+                                   Style="{StaticResource HeaderTextBlockStyle}"/>
+                    </RadioButton.Content>
+                </RadioButton>
+            </StackPanel>
+        </Grid>
+        
+    </Grid>
+</Window>

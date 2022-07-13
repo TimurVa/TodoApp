@@ -7,7 +7,15 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Pages\Windowed\SettingsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\Windowed\SettingsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\ButtonStyles.xaml">
@@ -17,6 +25,21 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\DrawingImages.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\MenuStyles.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\TextBlockStyles.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Themes\DarkTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\Themes\LightTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\ToggleButtonStyles.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Resources\ScrollViewerStyle.xaml">

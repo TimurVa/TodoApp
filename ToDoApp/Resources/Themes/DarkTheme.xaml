@@ -1,0 +1,40 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="MainBgColor">#2c2c2e</Color>
+    <SolidColorBrush x:Key="MainBgColorBrush" Color="{StaticResource MainBgColor}"/>
+
+    <Color x:Key="MainBorderColor">#8e8e93</Color>
+    <SolidColorBrush x:Key="MainBorderColorBrush" Color="{StaticResource MainBgColor}"/>
+
+    <Color x:Key="SelectedBorderColor">#3b7097</Color>
+    <SolidColorBrush x:Key="SelectedBorderColorBrush" Color="{StaticResource SelectedBorderColor}"/>
+
+    <Color x:Key="GrayColor">#48484a</Color>
+    <SolidColorBrush x:Key="GrayColorBrush" Color="{StaticResource GrayColor}"/>
+
+    <Color x:Key="DoneColor">#DADCDD</Color>
+    <SolidColorBrush x:Key="DoneColorBrush" Color="{StaticResource DoneColor}"/>
+
+    <Color x:Key="NotDoneColor">#EEF0F2</Color>
+    <SolidColorBrush x:Key="NotDoneColorBrush" Color="{StaticResource NotDoneColor}"/>
+
+    <Color x:Key="ButtonBgColor">#496b86</Color>
+    <SolidColorBrush x:Key="ButtonBgColorBrush" Color="{StaticResource ButtonBgColor}"/>
+
+    <Color x:Key="MainFgColor">#fff</Color>
+    <SolidColorBrush x:Key="MainFgColorBrush" Color="{StaticResource MainFgColor}"/>
+
+    <Color x:Key="MouseOverBorderColor">#aeaeb2</Color>
+    <SolidColorBrush x:Key="MouseOverBorderColorBrush" Color="{StaticResource MouseOverBorderColor}"/>
+
+    <Color x:Key="MouseOverBackgroundColor">#48484a</Color>
+    <SolidColorBrush x:Key="MouseOverBackgroundColorBrush" Color="{StaticResource MouseOverBackgroundColor}"/>
+
+    <Color x:Key="PopupBackgroundColor">#1c1c1e</Color>
+    <SolidColorBrush x:Key="PopupBackgroundColorBrush" Color="{StaticResource PopupBackgroundColor}"/>
+
+    <Color x:Key="SecondaryBgColor">#636366</Color>
+    <SolidColorBrush x:Key="SecondaryBgColorBrush" Color="{StaticResource SecondaryBgColor}"/>
+
+</ResourceDictionary>

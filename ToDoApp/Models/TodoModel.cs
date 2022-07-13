@@ -72,37 +72,37 @@ namespace ToDoApp.Models
 
                 if (_isDone)
                 {
-                    _bgColorString = "#DADCDD";
+                    //_bgColorString = "#DADCDD";
                     DoneTime = DateTime.Now;
                 }
                 else
                 {
-                    _bgColorString = "#EEF0F2";
+                    //_bgColorString = "#EEF0F2";
                     DoneTime = null;
                 }
-                OnPropertyChanged(nameof(BgColorString));
+                //OnPropertyChanged(nameof(BgColorString));
                 DoneChangedEvent?.Invoke(this, EventArgs.Empty);
             }
         }
 
-        private string _bgColorString;
-        /// <summary>
-        /// only for UI helper
-        /// </summary>
-        public string BgColorString
-        {
-            get => _bgColorString;
-            set
-            {
-                if (_bgColorString == value)
-                {
-                    return;
-                }
+        //private string _bgColorString;
+        ///// <summary>
+        ///// only for UI helper
+        ///// </summary>
+        //public string BgColorString
+        //{
+        //    get => _bgColorString;
+        //    set
+        //    {
+        //        if (_bgColorString == value)
+        //        {
+        //            return;
+        //        }
 
-                _bgColorString = value;
-                OnPropertyChanged();
-            }
-        }
+        //        _bgColorString = value;
+        //        OnPropertyChanged();
+        //    }
+        //}
 
         private DateTime? _doneTime;
         /// <summary>

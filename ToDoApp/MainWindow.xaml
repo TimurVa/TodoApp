@@ -5,26 +5,136 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:ToDoApp.Helpers.Converters"
         xmlns:attached="clr-namespace:ToDoApp.Helpers.Attached"
+        xmlns:local="clr-namespace:ToDoApp"
         mc:Ignorable="d"
         Title="Vlv Todo app" 
         Height="450" 
         Width="800"
-        Background="#FAFAFF"
-        Topmost="True">
+        Topmost="{Binding SettingsViewModel.IsTopMost}"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        WindowStartupLocation="CenterScreen"
+        >
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="22"
+                      GlassFrameThickness="0"
+                      CornerRadius="0"
+                      ResizeBorderThickness="5"
+                      />
+    </WindowChrome.WindowChrome>
 
     <Window.Resources>
         <converters:StringToBrushConverter x:Key="StringToBrushConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <Style TargetType="{x:Type local:MainWindow}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Window">
+                        <Border Background="{DynamicResource MainBgColorBrush}"
+                                BorderThickness="1"
+                                BorderBrush="{DynamicResource MainBorderColorBrush}">
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Grid x:Name="Menu">
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid Margin="5 0"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center">
+                                            <TextBlock Text="icon"/>
+                                        </Grid>
+                                        
+                                        
+                                        <Menu WindowChrome.IsHitTestVisibleInChrome="True"
+                                              HorizontalAlignment="Left"
+                                              Style="{StaticResource MenuStyle}"
+                                              VerticalAlignment="Center"
+                                              Grid.Column="1">
+                                            <MenuItem Header="View">
+                                                <MenuItem Header="Settings"
+                                                          Command="{Binding ShowSettingsCommand}">
+
+                                                </MenuItem>
+                                            </MenuItem>
+
+                                        </Menu>
+                                        
+                                    </Grid>
+
+                                    
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Top"
+                                                Margin="0 5 0 0"
+                                                Background="Transparent">
+                                        <Ellipse Width="4"
+                                                 Height="4"
+                                                 Fill="{StaticResource AppleGray6ColorBrush}"
+                                                 Margin="3 0"/>
+
+                                        <Ellipse Width="4"
+                                                 Height="4"
+                                                 Fill="{StaticResource AppleGray6ColorBrush}"/>
+
+                                        <Ellipse Width="4"
+                                                 Height="4"
+                                                 Fill="{StaticResource AppleGray6ColorBrush}"
+                                                 Margin="3 0"/>
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal" 
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Center"
+                                                WindowChrome.IsHitTestVisibleInChrome="true">
+                                        <Button Content="_"
+                                                Command="{Binding MinimizeCommand}"
+                                                Style="{StaticResource WindowButtonStyle}"/>
+                                        <Button Content="[ ]"
+                                                Command="{Binding MaximizeCommand}"
+                                                Style="{StaticResource WindowButtonStyle}"/>
+                                        <Button Content="x"
+                                                Command="{Binding CloseCommand}"
+                                                Style="{StaticResource WindowDangerButtonStyle}"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <ContentControl Grid.Row="1" 
+                                                Content="{TemplateBinding Content}"
+                                                Padding="5"/>
+
+                            </Grid>
+                            
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
-    <Grid Margin="10 15">
+    <Grid MouseEnter="Grid_MouseEnter"
+          MouseLeave="Grid_MouseLeave"
+          Background="Transparent"
+          >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal"
-                    Margin="0 5">
+                    Margin="10 3 10 0"
+                    x:Name="FiltersRow">
             <Button Content="Create"
                     Style="{StaticResource DefaultButtonStyle}"
                     Command="{Binding AddNewTodoItemCommand}"/>
@@ -41,11 +151,12 @@
                     CommandParameter="0"/>
         </StackPanel>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1"
+              Margin="10 0 0 0">
             
             <ListBox ItemsSource="{Binding FilteredTodoModels}"
                      BorderThickness="0"
-                     Background="#FAFAFF"
+                     Background="{DynamicResource MainBgColorBrush}"
                      VerticalAlignment="Stretch"
                      ScrollViewer.CanContentScroll="False"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -54,7 +165,7 @@
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Property="Margin" Value="0 3"/>
                         <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Background" Value="{Binding BgColorString, Converter={StaticResource StringToBrushConverter}}"/>
+                        <Setter Property="Background" Value="{DynamicResource SecondaryBgColorBrush}"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
@@ -70,15 +181,20 @@
                                     <!--Triggers-->
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
-                                            <Setter Property="BorderBrush" Value="#3b7097" TargetName="Part_Border"/>
+                                            <Setter Property="BorderBrush" Value="{DynamicResource SelectedBorderColorBrush}" TargetName="Part_Border"/>
                                             <!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>-->
                                             <Setter Property="Foreground" Value="White"/>
                                         </Trigger>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>-->
-                                            <Setter Property="BorderBrush" Value="{StaticResource AppleGray2ColorBrush}" TargetName="Part_Border"/>
+                                            <Setter Property="BorderBrush" Value="{DynamicResource GrayColorBrush}" TargetName="Part_Border"/>
                                             <Setter Property="Foreground" Value="White"/>
                                         </Trigger>
+
+                                        <DataTrigger Binding="{Binding IsDone}" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource GrayColorBrush}"/>
+                                        </DataTrigger>
+                                        
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -114,12 +230,12 @@
                                         <TextBlock>
                                             <!--<Run Text="Created at:"/>-->
                                             <Run FontSize="14" 
-                                                 Foreground="{StaticResource AppleGray2ColorBrush}"
+                                                 Foreground="{DynamicResource MainFgColorBrush}"
                                                  Text="{Binding CreatedTime, StringFormat='{}{0:dd.MM.yyyy, HH:mm}'}"/>
                                         </TextBlock>
 
                                         <TextBlock Margin="10 0 0 0"
-                                                   Foreground="{StaticResource AppleGray2ColorBrush}"
+                                                   Foreground="{DynamicResource MainFgColorBrush}"
                                                    VerticalAlignment="Center"
                                                    Visibility="{Binding IsDone, Converter={StaticResource BooleanToVisibilityConverter}}">
                                             <Run FontSize="12" 
@@ -180,6 +296,7 @@
                                              TextWrapping="Wrap"
                                              attached:TextBoxAttachedProperties.BindingOnKeyUp="True"
                                              FontSize="14"
+                                             Foreground="{DynamicResource MainFgColorBrush}"
                                              >
                                         <TextBox.Style>
                                             <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTexBoxStyle}">
