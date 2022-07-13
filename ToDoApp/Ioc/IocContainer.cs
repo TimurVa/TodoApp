@@ -1,6 +1,9 @@
 ﻿using Ninject;
 using ToDoApp.Database;
+using ToDoApp.Helpers.Services;
+using ToDoApp.Interfaces;
 using ToDoApp.Models;
+using ToDoApp.ViewModels;
 
 namespace ToDoApp.Ioc
 {
@@ -10,6 +13,10 @@ namespace ToDoApp.Ioc
 
         public static IRepository<TodoModel> TodoRepository => Get<IRepository<TodoModel>>();
 
+        public static ISettings Settings => Get<ISettings>();
+
+        public static ISettingsProvider SettingsProvider => Get<ISettingsProvider>();
+
         /// <summary>
         /// Sets up the IoC container, binds all information required and is ready for use
         /// NOTE: Must be called as soon as your application starts up to ensure all 
@@ -18,6 +25,8 @@ namespace ToDoApp.Ioc
         public static void Setup()
         {
             Kernel.Bind<IRepository<TodoModel>>().To<TodoRepository>().InSingletonScope();
+            Kernel.Bind<ISettings>().ToConstant(new SettingsViewModel());
+            Kernel.Bind<ISettingsProvider>().To<SettingsProvider>().InSingletonScope();
         }
 
 

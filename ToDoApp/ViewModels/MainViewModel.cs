@@ -6,13 +6,20 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using ToDoApp.Database;
 using ToDoApp.Helpers;
+using ToDoApp.Interfaces;
 using ToDoApp.Models;
 
 namespace ToDoApp.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        public event EventHandler Completed;
+        public event EventHandler Maximize;
+        public event EventHandler Minimize;
+
         #region Properties
+        private bool? _lastFilterByIsDone;
+        private bool _isDisposed = false;
         private readonly IRepository<TodoModel> _todoRepo = Ioc.IocContainer.TodoRepository;
 
         private ObservableCollection<TodoModel> _todoModels;
@@ -46,12 +53,34 @@ namespace ToDoApp.ViewModels
             }
         }
 
-        private bool? _lastFilterByIsDone;
+        private bool _isTopMost = true;
+        public bool IsTopMost
+        {
+            get => _isTopMost;
+            set
+            {
+                if (_isTopMost == value)
+                {
+                    return;
+                }
+
+                _isTopMost = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private readonly ISettings _settings;
+        public ISettings SettingsViewModel
+        {
+            get => _settings;
+        }
         #endregion
 
         #region Constructor
-        public MainViewModel()
+        public MainViewModel(ISettings settings)
         {
+            _settings = settings;
+
             TodoModels.CollectionChanged += _todoModels_CollectionChanged;
 
             Task.Run(async () =>
@@ -117,11 +146,42 @@ namespace ToDoApp.ViewModels
         private ICommand _removeTodoItemCommand;
         private ICommand _setTodoItemAsDoneCommand;
         private ICommand _filterTodoItemsCommand;
+        private ICommand _toggleTopMostCommand;
+        private ICommand _closeCommand;
+        private ICommand _minimizeCommand;
+        private ICommand _maximizeCommand;
+        private ICommand _showSettingsCommand;
 
         public ICommand AddNewTodoItemCommand => _addNewTodoItemCommand ??= new RelayCommand(async (p) => await AddNewTodoItemCommand_Executed(p));
         public ICommand RemoveTodoItemCommand => _removeTodoItemCommand ??= new RelayCommand(async(p) => await RemoveTodoItemCommand_Executed(p));
         public ICommand SetTodoItemAsDoneCommand => _setTodoItemAsDoneCommand ??= new RelayCommand(async(p) => await SetTodoItemAsDoneCommand_Executed(p));
         public ICommand FilterTodoItemsCommand => _filterTodoItemsCommand ??= new RelayCommand(FilterTodoItemsCommand_Executed);
+        public ICommand ToggleTopMostCommand => _toggleTopMostCommand ??= new RelayCommand(ToggleTopMostCommand_Executed);
+        public ICommand CloseCommand => _closeCommand ??= new RelayCommand(CloseCommand_Executed);
+        public ICommand MinimizeCommand => _minimizeCommand ??= new RelayCommand(MinimizeCommand_Executed);
+        public ICommand MaximizeCommand => _maximizeCommand ??= new RelayCommand(MaximizeCommand_Executed);
+        public ICommand ShowSettingsCommand => _showSettingsCommand ??= new RelayCommand(ShowSettingsCommand_Executed);
+
+        private void MaximizeCommand_Executed(object obj)
+        {
+            Maximize?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void MinimizeCommand_Executed(object obj)
+        {
+            Minimize?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void CloseCommand_Executed(object obj)
+        {
+            if (_isDisposed)
+            {
+                return;
+            }
+
+            _isDisposed = true;
+            Completed?.Invoke(this, EventArgs.Empty);
+        }
 
         private async Task AddNewTodoItemCommand_Executed(object obj)
         {
@@ -340,6 +400,16 @@ namespace ToDoApp.ViewModels
                     }
                 }
             }
+        }
+
+        private void ToggleTopMostCommand_Executed(object obj)
+        {
+            IsTopMost ^= true;
+        }
+
+        private void ShowSettingsCommand_Executed(object obj)
+        {
+            Ioc.IocContainer.SettingsProvider.Show();
         }
         #endregion
 

@@ -3,14 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using ToDoApp.Helpers;
 using ToDoApp.Models;
 
 namespace ToDoApp.Database
 {
     public class TodoRepository : IRepository<TodoModel>
     {
-        private static readonly SemaphoreSlim _s = new SemaphoreSlim(1, 1);
-        private const byte REPEAT_COUNT = 1;
+
 
         public TodoRepository()
         {
@@ -22,7 +22,7 @@ namespace ToDoApp.Database
                     System.Diagnostics.Debug.WriteLine("Sqlite busy");
                     await Task.Delay(500);
 
-                    if (i >= REPEAT_COUNT)
+                    if (i >= Static.REPEAT_COUNT)
                     {
                         throw new Exception("Can't initialize application.");
                     }
@@ -62,7 +62,7 @@ namespace ToDoApp.Database
 
         public async Task<long> AddAsync(TodoModel todo, CancellationToken token = default)
         {
-            await _s.WaitAsync();
+            await Static.Semaphore.WaitAsync();
 
             try
             {
@@ -105,14 +105,14 @@ namespace ToDoApp.Database
             }
             finally
             {
-                _s.Release();
+                Static.Semaphore.Release();
             }
 
         }
 
         public async Task DeleteAsync(long id, CancellationToken token = default)
         {
-            await _s.WaitAsync();
+            await Static.Semaphore.WaitAsync();
 
             try
             {
@@ -137,13 +137,13 @@ namespace ToDoApp.Database
             }
             finally
             {
-                _s.Release();
+                Static.Semaphore.Release();
             }
         }
 
         public async Task<TodoModel> GetAsync(long id, CancellationToken token = default)
         {
-            await _s.WaitAsync();
+            await Static.Semaphore.WaitAsync();
 
             try
             {
@@ -192,13 +192,13 @@ namespace ToDoApp.Database
             }
             finally
             {
-                _s.Release();
+                Static.Semaphore.Release();
             }
         }
 
         public async Task UpdateAsync(int property, TodoModel todo, CancellationToken token = default)
         {
-            await _s.WaitAsync();
+            await Static.Semaphore.WaitAsync();
 
             try
             {
@@ -252,13 +252,13 @@ namespace ToDoApp.Database
             }
             finally
             {
-                _s.Release();
+                Static.Semaphore.Release();
             }
         }
 
         public async IAsyncEnumerable<TodoModel> GetAllAsync()
         {
-            await _s.WaitAsync();
+            await Static.Semaphore.WaitAsync();
 
             try
             {
@@ -303,7 +303,7 @@ namespace ToDoApp.Database
             }
             finally
             {
-                _s.Release();
+                Static.Semaphore.Release();
             }
         }
     }
