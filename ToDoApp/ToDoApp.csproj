@@ -17,4 +17,8 @@
     <PackageReference Include="Ninject" Version="3.3.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Nextensor\VlvCustomControlsDotNet\VlvCustomControlsDotNet.csproj" />
+  </ItemGroup>
+
 </Project>

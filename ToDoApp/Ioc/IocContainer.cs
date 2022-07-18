@@ -13,6 +13,8 @@ namespace ToDoApp.Ioc
 
         public static IRepository<TodoModel> TodoRepository => Get<IRepository<TodoModel>>();
 
+        public static IRepository<PasswordModel> PasswordRepository => Get<IRepository<PasswordModel>>();
+
         public static ISettings Settings => Get<ISettings>();
 
         public static ISettingsProvider SettingsProvider => Get<ISettingsProvider>();
@@ -25,6 +27,7 @@ namespace ToDoApp.Ioc
         public static void Setup()
         {
             Kernel.Bind<IRepository<TodoModel>>().To<TodoRepository>().InSingletonScope();
+            Kernel.Bind<IRepository<PasswordModel>>().To<PasswordRepository>().InSingletonScope();
             Kernel.Bind<ISettings>().ToConstant(new SettingsViewModel());
             Kernel.Bind<ISettingsProvider>().To<SettingsProvider>().InSingletonScope();
         }

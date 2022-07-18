@@ -1,152 +1,22 @@
-﻿<Window x:Class="ToDoApp.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:converters="clr-namespace:ToDoApp.Helpers.Converters"
-        xmlns:attached="clr-namespace:ToDoApp.Helpers.Attached"
-        xmlns:viewModel="clr-namespace:ToDoApp.ViewModels"
-        xmlns:view="clr-namespace:ToDoApp.Pages"
-        xmlns:local="clr-namespace:ToDoApp"
-        mc:Ignorable="d"
-        Title="Vlv Todo app" 
-        Height="450" 
-        Width="800"
-        Topmost="{Binding SettingsViewModel.IsTopMost}"
-        WindowStyle="None"
-        AllowsTransparency="True"
-        WindowStartupLocation="CenterScreen"
-        >
+﻿<Page x:Class="ToDoApp.Pages.TodoPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ToDoApp.Pages"
+      xmlns:attached="clr-namespace:ToDoApp.Helpers.Attached"
+      xmlns:converters="clr-namespace:ToDoApp.Helpers.Converters"
+      xmlns:vlv="clr-namespace:VlvCustomControlsDotNet;assembly=VlvCustomControlsDotNet"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="TodoPage">
 
-    <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="22"
-                      GlassFrameThickness="0"
-                      CornerRadius="0"
-                      ResizeBorderThickness="5"
-                      />
-    </WindowChrome.WindowChrome>
-
-    <Window.Resources>
+    <Page.Resources>
         <converters:StringToBrushConverter x:Key="StringToBrushConverter"/>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Page.Resources>
 
-        <DataTemplate DataType="{x:Type viewModel:TodoViewModel}">
-            <view:TodoPage/>
-        </DataTemplate>
-
-        <DataTemplate DataType="{x:Type viewModel:PasswordsViewModel}">
-            <view:PasswordsPage/>
-        </DataTemplate>
-
-        <Style TargetType="{x:Type local:MainWindow}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Window">
-                        <Border Background="{DynamicResource MainBgColorBrush}"
-                                BorderThickness="1"
-                                BorderBrush="{DynamicResource MainBorderColorBrush}">
-
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="25"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-
-                                <Grid x:Name="Menu">
-
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <Grid Margin="5 0"
-                                              HorizontalAlignment="Center"
-                                              VerticalAlignment="Center">
-                                            <TextBlock Text="icon"/>
-                                        </Grid>
-                                        
-                                        
-                                        <Menu WindowChrome.IsHitTestVisibleInChrome="True"
-                                              HorizontalAlignment="Left"
-                                              Style="{StaticResource MenuStyle}"
-                                              VerticalAlignment="Center"
-                                              Grid.Column="1">
-                                            <MenuItem Header="View">
-                                                <MenuItem Header="Todo list"
-                                                          Command="{Binding ChangePageCommand}"
-                                                          CommandParameter="Todo"/>
-
-                                                <MenuItem Header="Passwords"
-                                                          Command="{Binding ChangePageCommand}"
-                                                          CommandParameter="Passwords"/>
-
-                                                <MenuItem Header="Settings"
-                                                          Command="{Binding ShowSettingsCommand}"/>
-
-
-                                            </MenuItem>
-
-                                        </Menu>
-                                        
-                                    </Grid>
-
-                                    
-                                    <StackPanel Orientation="Horizontal"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Top"
-                                                Margin="0 5 0 0"
-                                                Background="Transparent">
-                                        <Ellipse Width="4"
-                                                 Height="4"
-                                                 Fill="{StaticResource AppleGray6ColorBrush}"
-                                                 Margin="3 0"/>
-
-                                        <Ellipse Width="4"
-                                                 Height="4"
-                                                 Fill="{StaticResource AppleGray6ColorBrush}"/>
-
-                                        <Ellipse Width="4"
-                                                 Height="4"
-                                                 Fill="{StaticResource AppleGray6ColorBrush}"
-                                                 Margin="3 0"/>
-                                    </StackPanel>
-
-                                    <StackPanel Orientation="Horizontal" 
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Center"
-                                                WindowChrome.IsHitTestVisibleInChrome="true">
-                                        <Button Content="_"
-                                                Command="{Binding MinimizeCommand}"
-                                                Style="{StaticResource WindowButtonStyle}"/>
-                                        <Button Content="[ ]"
-                                                Command="{Binding MaximizeCommand}"
-                                                Style="{StaticResource WindowButtonStyle}"/>
-                                        <Button Content="x"
-                                                Command="{Binding CloseCommand}"
-                                                Style="{StaticResource WindowDangerButtonStyle}"/>
-                                    </StackPanel>
-                                </Grid>
-
-                                <ContentControl Grid.Row="1" 
-                                                Content="{TemplateBinding Content}"
-                                                Padding="5"/>
-
-                            </Grid>
-                            
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
-
-    <Grid>
-        <Frame NavigationUIVisibility="Hidden"
-               Content="{Binding SelectedViewModel}"/>
-    </Grid>
-
-    <!--<Grid MouseEnter="Grid_MouseEnter"
+    <Grid MouseEnter="Grid_MouseEnter"
           MouseLeave="Grid_MouseLeave"
           Background="Transparent"
           >
@@ -172,11 +42,21 @@
                     Style="{StaticResource DefaultButtonStyle}"
                     Command="{Binding FilterTodoItemsCommand}"
                     CommandParameter="0"/>
+
+            <vlv:SearchTextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               Placeholder="Search..."
+                               Width="100"
+                               Height="18"
+                               VerticalAlignment="Center"
+                               Margin="5 0 0 0"
+                               Foreground="{DynamicResource MainFgColorBrush}"
+                               ButtonStyle="{StaticResource ButtonForIconPlacementStyle}"
+                               SearchCommand="{Binding SearchCommand}"/>
         </StackPanel>
 
         <Grid Grid.Row="1"
               Margin="10 0 0 0">
-            
+
             <ListBox ItemsSource="{Binding FilteredTodoModels}"
                      BorderThickness="0"
                      Background="{DynamicResource MainBgColorBrush}"
@@ -201,15 +81,15 @@
                                         CornerRadius="7">
                                         <ContentPresenter/>
                                     </Border>
-                                    --><!--Triggers--><!--
+                                    <!--Triggers-->
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="BorderBrush" Value="{DynamicResource SelectedBorderColorBrush}" TargetName="Part_Border"/>
-                                            --><!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>--><!--
+                                            <!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>-->
                                             <Setter Property="Foreground" Value="White"/>
                                         </Trigger>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            --><!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>--><!--
+                                            <!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>-->
                                             <Setter Property="BorderBrush" Value="{DynamicResource GrayColorBrush}" TargetName="Part_Border"/>
                                             <Setter Property="Foreground" Value="White"/>
                                         </Trigger>
@@ -217,7 +97,7 @@
                                         <DataTrigger Binding="{Binding IsDone}" Value="True">
                                             <Setter Property="Background" Value="{DynamicResource GrayColorBrush}"/>
                                         </DataTrigger>
-                                        
+
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -226,7 +106,7 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        --><!--BorderBrush="{Binding BgColorString, Converter={StaticResource StringToBrushConverter}}"--><!--
+                        <!--BorderBrush="{Binding BgColorString, Converter={StaticResource StringToBrushConverter}}"-->
                         <Border BorderThickness="0 0 3 0"
                                 Padding="7 3">
                             <Grid>
@@ -238,20 +118,20 @@
                                     <RowDefinition Height="auto"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                
-                                --><!-- NAME AND TIME --><!--
+
+                                <!-- NAME AND TIME -->
                                 <Grid>
                                     <StackPanel Orientation="Horizontal"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Stretch">
-                                        --><!--<TextBox Text="{Binding Name}"
+                                        <!--<TextBox Text="{Binding Name}"
                                                  Style="{StaticResource DefaultTexBoxStyle}"
                                                  MinWidth="100"
                                                  attached:TextBoxAttachedProperties.BindingOnKeyUp="True"
                                                  Margin="0 0 10 0"
-                                                 FontSize="14"/>--><!--
+                                                 FontSize="14"/>-->
                                         <TextBlock>
-                                            --><!--<Run Text="Created at:"/>--><!--
+                                            <!--<Run Text="Created at:"/>-->
                                             <Run FontSize="14" 
                                                  Foreground="{DynamicResource MainFgColorBrush}"
                                                  Text="{Binding CreatedTime, StringFormat='{}{0:dd.MM.yyyy, HH:mm}'}"/>
@@ -267,7 +147,7 @@
                                     </StackPanel>
                                 </Grid>
 
-                                --><!-- REMOVE ITEM BUTTON --><!--
+                                <!-- REMOVE ITEM BUTTON -->
                                 <Grid Grid.Column="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
@@ -280,11 +160,11 @@
                                         <Button.Style>
                                             <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                                                 <Setter Property="Background" Value="Transparent"/>
-                                                --><!--<Style.Triggers>
+                                                <!--<Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsDone}" Value="true">
                                                         <Setter Property="Background" Value="#fff"/>
                                                     </DataTrigger>
-                                                </Style.Triggers>--><!--
+                                                </Style.Triggers>-->
                                             </Style>
                                         </Button.Style>
 
@@ -302,14 +182,15 @@
                                         <Button.Content>
                                             <Grid>
                                                 <Image Source="{StaticResource CrossImage}"/>
-                                                --><!--<TextBlock Text="x"/>--><!--
+                                                <!--<TextBlock Text="x"/>-->
                                             </Grid>
                                         </Button.Content>
                                     </Button>
                                 </Grid>
 
-                                --><!-- DESCRIPTION OF TODO --><!--
-                                <Grid Grid.Row="1">
+                                <!-- DESCRIPTION OF TODO -->
+                                <Grid Grid.Row="1"
+                                      Grid.ColumnSpan="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="auto"/>
@@ -333,18 +214,20 @@
                                     </TextBox>
                                 </Grid>
 
-                                --><!-- TOGGLE COMPLETENESS -->
+                                <!-- TOGGLE COMPLETENESS -->
                                 <!--<Grid Grid.Row="2" Grid.Column="1" Margin="5 5 5 0">
                                     <Button Command="{Binding DataContext.SetTodoItemAsDoneCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
                                             CommandParameter="{Binding}">
                                         <Button.Style>
                                             <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                                                 <Setter Property="Background" Value="Transparent"/>
-                                                --><!--<Style.Triggers>
+                                                -->
+                                <!--<Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsDone}" Value="true">
                                                         <Setter Property="Background" Value="#fff"/>
                                                     </DataTrigger>
-                                                </Style.Triggers>--><!--
+                                                </Style.Triggers>-->
+                                <!--
                                             </Style>
                                         </Button.Style>
 
@@ -352,13 +235,12 @@
                                             <Image Source="{StaticResource CheckedImage}"/>
                                         </Button.Content>
                                     </Button>
-                                </Grid>--><!--
+                                </Grid>-->
                             </Grid>
                         </Border>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </Grid>
-    </Grid>-->
-    
-</Window>
+    </Grid>
+</Page>
