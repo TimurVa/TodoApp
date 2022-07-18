@@ -151,7 +151,7 @@ namespace ToDoApp.ViewModels
 
             try
             {
-                using SqliteConnection sqliteConnection = new SqliteConnection("Data Source=appdb.db");
+                using SqliteConnection sqliteConnection = new SqliteConnection(Static.DatabasePath);
                 await sqliteConnection.OpenAsync(token).ConfigureAwait(false);
                 SqliteTransaction transaction = sqliteConnection.BeginTransaction();
 
@@ -182,7 +182,7 @@ namespace ToDoApp.ViewModels
 
             try
             {
-                using SqliteConnection sqliteConnection = new SqliteConnection("Data Source=appdb.db");
+                using SqliteConnection sqliteConnection = new SqliteConnection(Static.DatabasePath);
                 await sqliteConnection.OpenAsync().ConfigureAwait(false);
 
                 SqliteCommand todoTable = sqliteConnection.CreateCommand();
@@ -211,7 +211,7 @@ namespace ToDoApp.ViewModels
 
             try
             {
-                using SqliteConnection sqliteConnection = new SqliteConnection("Data Source=appdb.db");
+                using SqliteConnection sqliteConnection = new SqliteConnection(Static.DatabasePath);
                 await sqliteConnection.OpenAsync().ConfigureAwait(false);
 
                 var settingsCommand = sqliteConnection.CreateCommand();

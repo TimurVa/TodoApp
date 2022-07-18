@@ -10,8 +10,6 @@ namespace ToDoApp.Database
 {
     public class TodoRepository : IRepository<TodoModel>
     {
-
-
         public TodoRepository()
         {
             Task.Run(async () =>
@@ -38,7 +36,7 @@ namespace ToDoApp.Database
         {
             try
             {
-                using SqliteConnection sqliteConnection = new SqliteConnection("Data Source=appdb.db");
+                using SqliteConnection sqliteConnection = new SqliteConnection(Static.DatabasePath);
                 await sqliteConnection.OpenAsync().ConfigureAwait(false);
 
                 SqliteCommand todoTable = sqliteConnection.CreateCommand();
@@ -54,7 +52,7 @@ namespace ToDoApp.Database
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }    
@@ -66,7 +64,7 @@ namespace ToDoApp.Database
 
             try
             {
-                using SqliteConnection sqliteConnection = new SqliteConnection("Data Source=appdb.db");
+                using SqliteConnection sqliteConnection = new SqliteConnection(Static.DatabasePath);
                 await sqliteConnection.OpenAsync(token).ConfigureAwait(false);
 
                 SqliteTransaction transaction = sqliteConnection.BeginTransaction();
@@ -107,7 +105,6 @@ namespace ToDoApp.Database
             {
                 Static.Semaphore.Release();
             }
-
         }
 
         public async Task DeleteAsync(long id, CancellationToken token = default)
@@ -116,7 +113,7 @@ namespace ToDoApp.Database
 
             try
             {
-                using SqliteConnection sqliteConnection = new SqliteConnection("Data Source=appdb.db");
+                using SqliteConnection sqliteConnection = new SqliteConnection(Static.DatabasePath);
                 await sqliteConnection.OpenAsync(token).ConfigureAwait(false);
 
                 SqliteTransaction transaction = sqliteConnection.BeginTransaction();
@@ -147,7 +144,7 @@ namespace ToDoApp.Database
 
             try
             {
-                using SqliteConnection sqliteConnection = new SqliteConnection("Data Source=appdb.db");
+                using SqliteConnection sqliteConnection = new SqliteConnection(Static.DatabasePath);
                 await sqliteConnection.OpenAsync(token).ConfigureAwait(false);
 
                 SqliteCommand getItemsCommand = sqliteConnection.CreateCommand();
@@ -158,7 +155,7 @@ namespace ToDoApp.Database
 
                 if (reader.HasRows)
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync().ConfigureAwait(false ))
                     {
                         DateTime time = new DateTime(reader.GetInt64(2));
 
@@ -202,7 +199,7 @@ namespace ToDoApp.Database
 
             try
             {
-                using SqliteConnection sqliteConnection = new SqliteConnection("Data Source=appdb.db");
+                using SqliteConnection sqliteConnection = new SqliteConnection(Static.DatabasePath);
                 await sqliteConnection.OpenAsync(token).ConfigureAwait(false);
 
                 SqliteTransaction transaction = sqliteConnection.BeginTransaction();
@@ -262,7 +259,7 @@ namespace ToDoApp.Database
 
             try
             {
-                using SqliteConnection sqliteConnection = new SqliteConnection("Data Source=appdb.db");
+                using SqliteConnection sqliteConnection = new SqliteConnection(Static.DatabasePath);
                 await sqliteConnection.OpenAsync().ConfigureAwait(false);
 
                 SqliteCommand getItemsCommand = sqliteConnection.CreateCommand();
@@ -272,7 +269,7 @@ namespace ToDoApp.Database
 
                 if (reader.HasRows)
                 {
-                    while (reader.Read())
+                    while (await reader.ReadAsync().ConfigureAwait(false))
                     {
                         DateTime time = new DateTime(reader.GetInt64(2));
 

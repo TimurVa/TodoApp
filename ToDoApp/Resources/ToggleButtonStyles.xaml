@@ -129,5 +129,40 @@
         </Setter>
 
     </Style>
+
+    <Style TargetType="ToggleButton" x:Key="ToggleButtonMouseOverTransparentStyle">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="{TemplateBinding Background}"
+                                        x:Name="border"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        SnapsToDevicePixels="True"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="20">
+                            <Grid>
+                                <ContentPresenter Content="{TemplateBinding Content}"
+                                                  x:Name="contentSite"
+                                                  SnapsToDevicePixels="True"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                  Margin="{TemplateBinding Padding}"
+                                                  />
+                            </Grid>
+                        </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Background" Value="{DynamicResource MouseOverBackgroundColorBrush}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     
 </ResourceDictionary>

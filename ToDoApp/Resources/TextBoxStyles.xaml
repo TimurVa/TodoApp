@@ -7,6 +7,7 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
         <Setter Property="Foreground" Value="{DynamicResource MainFgColorBrush}"/>
+        <Setter Property="CaretBrush" Value="{DynamicResource MainFgColorBrush}"/>
     </Style>
     
 </ResourceDictionary>
