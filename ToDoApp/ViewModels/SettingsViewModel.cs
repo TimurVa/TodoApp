@@ -158,9 +158,9 @@ namespace ToDoApp.ViewModels
                 SqliteCommand updateTodoItemCommand = sqliteConnection.CreateCommand();
                 updateTodoItemCommand.Transaction = transaction;
 
-                updateTodoItemCommand.CommandText = "UPDATE Settings SET Value = @Value WHERE Id = @Id";
-                updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Value", value));
-                updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Id", id));
+                updateTodoItemCommand.CommandText = $"UPDATE {Constants.SETTINGS_TABLE_NAME} SET {Constants.VALUE} = @{Constants.VALUE} WHERE {Constants.ID} = @{Constants.ID}";
+                updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.VALUE}", value));
+                updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", id));
 
                 await updateTodoItemCommand.ExecuteNonQueryAsync(token).ConfigureAwait(false);
 
@@ -186,11 +186,7 @@ namespace ToDoApp.ViewModels
                 await sqliteConnection.OpenAsync().ConfigureAwait(false);
 
                 SqliteCommand todoTable = sqliteConnection.CreateCommand();
-                todoTable.CommandText = "CREATE TABLE IF NOT EXISTS Settings(Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                    "Property TEXT," +
-                    "Value TEXT " +
-                    " )";
-
+                todoTable.CommandText = Constants.CREATE_SETTINGS_TABLE;
                 await todoTable.ExecuteNonQueryAsync().ConfigureAwait(false);
 
                 return true;
@@ -216,7 +212,7 @@ namespace ToDoApp.ViewModels
 
                 var settingsCommand = sqliteConnection.CreateCommand();
 
-                settingsCommand.CommandText = "SELECT * FROM Settings";
+                settingsCommand.CommandText = Constants.GetSelectAllString(Constants.SETTINGS_TABLE_NAME);
                 var reader = await settingsCommand.ExecuteReaderAsync().ConfigureAwait(false);
 
                 if (reader.HasRows)
@@ -281,7 +277,8 @@ namespace ToDoApp.ViewModels
 
         private async Task PopulateSettings(SqliteCommand settingsCommand, string property, string value)
         {
-            settingsCommand.CommandText = $"INSERT INTO Settings (Property, Value) VALUES ('{property}', '{value}')";
+            // no need for parameters. User can't interract with this
+            settingsCommand.CommandText = $"INSERT INTO {Constants.SETTINGS_TABLE_NAME} (Property, Value) VALUES ('{property}', '{value}')";
             await settingsCommand.ExecuteNonQueryAsync().ConfigureAwait(false);
         }
         #endregion

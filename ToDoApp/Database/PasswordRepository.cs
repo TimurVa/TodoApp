@@ -40,11 +40,7 @@ namespace ToDoApp.Database
                 await sqliteConnection.OpenAsync().ConfigureAwait(false);
 
                 SqliteCommand table = sqliteConnection.CreateCommand();
-                table.CommandText = "CREATE TABLE IF NOT EXISTS Passwords(Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                    "WhatFor TEXT, " +
-                    "UserName TEXT," +
-                    "Password TEXT" +
-                    " )";
+                table.CommandText = Constants.CREATE_PASSWORDS_TABLE;
 
                 await table.ExecuteNonQueryAsync().ConfigureAwait(false);
 
@@ -70,16 +66,11 @@ namespace ToDoApp.Database
                 SqliteCommand addCommand = sqliteConnection.CreateCommand();
                 addCommand.Transaction = transaction;
 
-                addCommand.CommandText = "INSERT INTO Passwords (WhatFor, UserName, Password)" +
-                    "VALUES (" +
-                    "@WhatFor," +
-                    "@UserName," +
-                    "@Password" +
-                    ")";
+                addCommand.CommandText = Constants.INSERT_PASSWORD;
 
-                addCommand.Parameters.Add(new SqliteParameter("@WhatFor", model.WhatFor));
-                addCommand.Parameters.Add(new SqliteParameter("@UserName", model.UserName));
-                addCommand.Parameters.Add(new SqliteParameter("@Password", model.Password));
+                addCommand.Parameters.Add(new SqliteParameter($"@{Constants.WHAT_FOR}", model.WhatFor));
+                addCommand.Parameters.Add(new SqliteParameter($"@{Constants.USER_NAME}", model.UserName));
+                addCommand.Parameters.Add(new SqliteParameter($"@{Constants.PASSWORD}", model.Password));
 
                 await addCommand.ExecuteNonQueryAsync(token).ConfigureAwait(false);
 
@@ -117,8 +108,8 @@ namespace ToDoApp.Database
                 SqliteCommand removeItemCommand = sqliteConnection.CreateCommand();
                 removeItemCommand.Transaction = transaction;
 
-                removeItemCommand.CommandText = "DELETE FROM Passwords WHERE Id = @Id";
-                removeItemCommand.Parameters.Add(new SqliteParameter("@Id", id));
+                removeItemCommand.CommandText = Constants.GetDeleteString(Constants.PASSWORDS_TABLE_NAME);
+                removeItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", id));
 
                 await removeItemCommand.ExecuteNonQueryAsync(token).ConfigureAwait(false);
 
@@ -144,7 +135,7 @@ namespace ToDoApp.Database
                 await sqliteConnection.OpenAsync().ConfigureAwait(false);
 
                 SqliteCommand getItemsCommand = sqliteConnection.CreateCommand();
-                getItemsCommand.CommandText = "SELECT * FROM Passwords";
+                getItemsCommand.CommandText = Constants.GetSelectAllString(Constants.PASSWORDS_TABLE_NAME);
 
                 using var reader = await getItemsCommand.ExecuteReaderAsync().ConfigureAwait(false);
 
@@ -191,8 +182,8 @@ namespace ToDoApp.Database
                 await sqliteConnection.OpenAsync(token).ConfigureAwait(false);
 
                 SqliteCommand getItemsCommand = sqliteConnection.CreateCommand();
-                getItemsCommand.CommandText = "SELECT * FROM TodoItems WHERE Id = @Id";
-                getItemsCommand.Parameters.Add(new SqliteParameter("@Id", id));
+                getItemsCommand.CommandText = Constants.GetSelectByIdString(Constants.CREATE_PASSWORDS_TABLE);
+                getItemsCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", id));
 
                 using var reader = await getItemsCommand.ExecuteReaderAsync(token).ConfigureAwait(false);
 
@@ -209,8 +200,6 @@ namespace ToDoApp.Database
 
                         string passwordHash = reader.GetString(3);
                         model.Password = Static.Decrypt(passwordHash, Static.KEY);
-
-                        // unsecure password
 
                         return model;
                     }
@@ -244,15 +233,15 @@ namespace ToDoApp.Database
 
                 if (property == 1)
                 {
-                    updateTodoItemCommand.CommandText = "UPDATE Passwords SET WhatFor = @WhatFor WHERE Id = @Id";
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@WhatFor", model.WhatFor));
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Id", model.Id));
+                    updateTodoItemCommand.CommandText = $"UPDATE {Constants.PASSWORDS_TABLE_NAME} SET {Constants.WHAT_FOR} = @{Constants.WHAT_FOR} WHERE {Constants.ID} = @{Constants.ID}";
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.WHAT_FOR}", model.WhatFor));
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", model.Id));
                 }
                 else if (property == 2)
                 {
-                    updateTodoItemCommand.CommandText = "UPDATE Passwords SET UserName = @UserName WHERE Id = @Id";
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@UserName", model.UserName));
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Id", model.Id));
+                    updateTodoItemCommand.CommandText = $"UPDATE {Constants.PASSWORDS_TABLE_NAME} SET {Constants.USER_NAME} = @{Constants.USER_NAME} WHERE {Constants.ID} = @{Constants.ID}";
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.USER_NAME}", model.UserName));
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", model.Id));
                 }
                 else if (property == 3)
                 {
@@ -260,9 +249,9 @@ namespace ToDoApp.Database
 
                     string encrypted = Static.Encrypt(password, Static.KEY);
 
-                    updateTodoItemCommand.CommandText = "UPDATE Passwords SET Password = @Password WHERE Id = @Id";
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Password", encrypted));
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Id", model.Id));
+                    updateTodoItemCommand.CommandText = $"UPDATE {Constants.PASSWORDS_TABLE_NAME} SET {Constants.PASSWORD} = @{Constants.PASSWORD} WHERE {Constants.ID} = @{Constants.ID}";
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.PASSWORD}", encrypted));
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", model.Id));
                 }
 
                 await updateTodoItemCommand.ExecuteNonQueryAsync(token).ConfigureAwait(false);
