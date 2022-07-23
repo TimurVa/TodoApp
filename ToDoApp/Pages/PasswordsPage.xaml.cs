@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace ToDoApp.Pages
 {
@@ -10,6 +11,11 @@ namespace ToDoApp.Pages
         public PasswordsPage()
         {
             InitializeComponent();
+        }
+
+        private void Popup_PreviewMouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            ((Popup)sender).IsOpen = false;
         }
     }
 }

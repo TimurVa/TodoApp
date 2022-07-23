@@ -40,13 +40,7 @@ namespace ToDoApp.Database
                 await sqliteConnection.OpenAsync().ConfigureAwait(false);
 
                 SqliteCommand todoTable = sqliteConnection.CreateCommand();
-                todoTable.CommandText = "CREATE TABLE IF NOT EXISTS TodoItems(Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-                    "Name TEXT, " +
-                    "CreatedTimeTics INT64," +
-                    "Description TEXT, " +
-                    "IsDone BIT," +
-                    "DoneTimeTicks INT64" +
-                    " )";
+                todoTable.CommandText = Constants.CREATE_TODO_TABLE;
 
                 await todoTable.ExecuteNonQueryAsync().ConfigureAwait(false);
 
@@ -72,18 +66,18 @@ namespace ToDoApp.Database
                 SqliteCommand addCommand = sqliteConnection.CreateCommand();
                 addCommand.Transaction = transaction;
 
-                addCommand.CommandText = "INSERT INTO TodoItems (Name, CreatedTimeTics, Description, IsDone)" +
+                addCommand.CommandText = $"INSERT INTO {Constants.TODO_TABLE_NAME} ({Constants.NAME}, {Constants.CREATED_TIME_TICKS}, {Constants.DESCRIPTION}, {Constants.IS_DONE})" +
                     "VALUES (" +
-                    "@Name," +
-                    "@CreatedTimeTics," +
-                    "@Description," +
-                    "@IsDone" +
+                    $"@{Constants.NAME}," +
+                    $"@{Constants.CREATED_TIME_TICKS}," +
+                    $"@{Constants.DESCRIPTION}," +
+                    $"@{Constants.IS_DONE}" +
                     ")";
 
-                addCommand.Parameters.Add(new SqliteParameter("@Name", todo.Name));
-                addCommand.Parameters.Add(new SqliteParameter("@CreatedTimeTics", todo.CreatedTime.ToUniversalTime().Ticks));
-                addCommand.Parameters.Add(new SqliteParameter("@Description", todo.Description));
-                addCommand.Parameters.Add(new SqliteParameter("@IsDone", todo.IsDone));
+                addCommand.Parameters.Add(new SqliteParameter($"@{Constants.NAME}", todo.Name));
+                addCommand.Parameters.Add(new SqliteParameter($"@{Constants.CREATED_TIME_TICKS}", todo.CreatedTime.ToUniversalTime().Ticks));
+                addCommand.Parameters.Add(new SqliteParameter($"@{Constants.DESCRIPTION}", todo.Description));
+                addCommand.Parameters.Add(new SqliteParameter($"@{Constants.IS_DONE}", todo.IsDone));
 
 
                 await addCommand.ExecuteNonQueryAsync(token).ConfigureAwait(false);
@@ -121,8 +115,8 @@ namespace ToDoApp.Database
                 SqliteCommand removeItemCommand = sqliteConnection.CreateCommand();
                 removeItemCommand.Transaction = transaction;
 
-                removeItemCommand.CommandText = "DELETE FROM TodoItems WHERE Id = @Id";
-                removeItemCommand.Parameters.Add(new SqliteParameter("@Id", id));
+                removeItemCommand.CommandText = Constants.GetDeleteString(Constants.TODO_TABLE_NAME);
+                removeItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", id));
 
                 await removeItemCommand.ExecuteNonQueryAsync(token).ConfigureAwait(false);
 
@@ -148,8 +142,8 @@ namespace ToDoApp.Database
                 await sqliteConnection.OpenAsync(token).ConfigureAwait(false);
 
                 SqliteCommand getItemsCommand = sqliteConnection.CreateCommand();
-                getItemsCommand.CommandText = "SELECT * FROM TodoItems WHERE Id = @Id";
-                getItemsCommand.Parameters.Add(new SqliteParameter("@Id", id));
+                getItemsCommand.CommandText = Constants.GetSelectByIdString(Constants.TODO_TABLE_NAME);
+                getItemsCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", id));
 
                 using var reader = await getItemsCommand.ExecuteReaderAsync(token).ConfigureAwait(false);
 
@@ -209,34 +203,34 @@ namespace ToDoApp.Database
 
                 if (property == 1)
                 {
-                    updateTodoItemCommand.CommandText = "UPDATE TodoItems SET Name = @Name WHERE Id = @Id";
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Name", todo.Name));
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Id", todo.Id));
+                    updateTodoItemCommand.CommandText = $"UPDATE {Constants.TODO_TABLE_NAME} SET {Constants.NAME} = @{Constants.NAME} WHERE {Constants.ID} = @{Constants.ID}";
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.NAME}", todo.Name));
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", todo.Id));
                 }
                 else if (property == 2)
                 {
-                    updateTodoItemCommand.CommandText = "UPDATE TodoItems SET CreatedTimeTics = @CreatedTime WHERE Id = @Id";
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@CreatedTime", todo.CreatedTime.ToUniversalTime().Ticks));
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Id", todo.Id));
+                    updateTodoItemCommand.CommandText = $"UPDATE {Constants.TODO_TABLE_NAME} SET {Constants.CREATED_TIME_TICKS} = @{Constants.CREATED_TIME_TICKS} WHERE {Constants.ID} = @{Constants.ID}";
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.CREATED_TIME_TICKS}", todo.CreatedTime.ToUniversalTime().Ticks));
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", todo.Id));
                 }
                 else if (property == 3)
                 {
-                    updateTodoItemCommand.CommandText = "UPDATE TodoItems SET Description = @Description WHERE Id = @Id";
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Description", todo.Description));
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Id", todo.Id));
+                    updateTodoItemCommand.CommandText = $"UPDATE {Constants.TODO_TABLE_NAME} SET {Constants.DESCRIPTION} = @{Constants.DESCRIPTION} WHERE {Constants.ID} = @{Constants.ID}";
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.DESCRIPTION}", todo.Description));
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", todo.Id));
                 }
                 else if (property == 4)
                 {
-                    updateTodoItemCommand.CommandText = "UPDATE TodoItems SET IsDone = @IsDone WHERE Id = @Id";
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@IsDone", todo.IsDone));
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Id", todo.Id));
+                    updateTodoItemCommand.CommandText = $"UPDATE {Constants.TODO_TABLE_NAME} SET {Constants.IS_DONE} = @{Constants.IS_DONE} WHERE {Constants.ID} = @{Constants.ID}";
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.IS_DONE}", todo.IsDone));
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", todo.Id));
                 }
                 else if (property == 5)
                 {
-                    updateTodoItemCommand.CommandText = "UPDATE TodoItems SET DoneTimeTicks = @DoneTimeTicks WHERE Id = @Id";
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@DoneTimeTicks",
+                    updateTodoItemCommand.CommandText = $"UPDATE {Constants.TODO_TABLE_NAME} SET {Constants.DONE_TIME_TICKS} = @{Constants.DONE_TIME_TICKS} WHERE {Constants.ID} = @{Constants.ID}";
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.DONE_TIME_TICKS}",
                         todo.DoneTime == null ? DBNull.Value : todo.DoneTime?.ToUniversalTime().Ticks));
-                    updateTodoItemCommand.Parameters.Add(new SqliteParameter("@Id", todo.Id));
+                    updateTodoItemCommand.Parameters.Add(new SqliteParameter($"@{Constants.ID}", todo.Id));
                 }
 
                 await updateTodoItemCommand.ExecuteNonQueryAsync(token).ConfigureAwait(false);
@@ -263,7 +257,7 @@ namespace ToDoApp.Database
                 await sqliteConnection.OpenAsync().ConfigureAwait(false);
 
                 SqliteCommand getItemsCommand = sqliteConnection.CreateCommand();
-                getItemsCommand.CommandText = "SELECT * FROM TodoItems";
+                getItemsCommand.CommandText = Constants.GetSelectAllString(Constants.TODO_TABLE_NAME);
 
                 using var reader = await getItemsCommand.ExecuteReaderAsync().ConfigureAwait(false);
 
