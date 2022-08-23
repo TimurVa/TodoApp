@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="Resources/ToggleButtonStyles.xaml"/>
                 <ResourceDictionary Source="Resources/TextBlockStyles.xaml"/>
                 <ResourceDictionary Source="Resources/MenuStyles.xaml"/>
+                <ResourceDictionary Source="Resources/ListBoxStyleTemplates.xaml"/>
                 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

@@ -13,6 +13,7 @@ namespace ToDoApp.ViewModels
     public class PasswordsViewModel : BaseViewModel
     {
         #region Properties
+
         private readonly IRepository<PasswordModel> _passwordRepo = Ioc.IocContainer.PasswordRepository;
 
         private ObservableCollection<PasswordModel> _passwordModels;

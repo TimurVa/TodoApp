@@ -116,15 +116,62 @@
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Center"
                                                 WindowChrome.IsHitTestVisibleInChrome="true">
-                                        <Button Content="_"
-                                                Command="{Binding MinimizeCommand}"
-                                                Style="{StaticResource WindowButtonStyle}"/>
-                                        <Button Content="[ ]"
-                                                Command="{Binding MaximizeCommand}"
-                                                Style="{StaticResource WindowButtonStyle}"/>
-                                        <Button Content="x"
-                                                Command="{Binding CloseCommand}"
-                                                Style="{StaticResource WindowDangerButtonStyle}"/>
+                                        <Button Command="{Binding MinimizeCommand}"
+                                                Style="{StaticResource ButtonForIconPlacementStyle}"
+                                                Padding="0 5 0 5">
+                                            <Button.Content>
+                                                <Image Width="8">
+                                                    <Image.Source>
+                                                        <DrawingImage>
+                                                            <DrawingImage.Drawing>
+                                                                <DrawingGroup ClipGeometry="M0,0 V2 H12 V0 H0 Z">
+                                                                    <GeometryDrawing Brush="{DynamicResource MainFgColorBrush}" Geometry="F1 M12,2z M0,0z M1,0.25C0.585786,0.25 0.25,0.585787 0.25,1 0.25,1.41421 0.585786,1.75 1,1.75L1,0.25z M11,1.75C11.4142,1.75 11.75,1.41421 11.75,1 11.75,0.585786 11.4142,0.25 11,0.25L11,1.75z M1,1.75L11,1.75 11,0.25 1,0.25 1,1.75z" />
+                                                                </DrawingGroup>
+                                                            </DrawingImage.Drawing>
+                                                        </DrawingImage>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Button.Content>
+                                        </Button>
+                                        
+                                        <Button Command="{Binding MaximizeCommand}"
+                                                Style="{StaticResource ButtonForIconPlacementStyle}"
+                                                Padding="7 5 0 5">
+                                            <Button.Content>
+                                                <Image>
+                                                    <Image.Source>
+                                                        <DrawingImage>
+                                                            <DrawingImage.Drawing>
+                                                                <DrawingGroup ClipGeometry="M0,0 V12 H12 V0 H0 Z">
+                                                                    <GeometryDrawing Geometry="F1 M12,12z M0,0z M10.9999,1.00001L4.74996,7.25001 M10.9999,1.00001L11,4.75 M10.9999,1.00001L7.24999,1 M4.74999,1.00001L1,1.00001 1,11 11,11 11,7.25">
+                                                                        <GeometryDrawing.Pen>
+                                                                            <Pen Brush="{DynamicResource MainFgColorBrush}" Thickness="1.5" StartLineCap="Round" EndLineCap="Round" LineJoin="Round" MiterLimit="1" />
+                                                                        </GeometryDrawing.Pen>
+                                                                    </GeometryDrawing>
+                                                                </DrawingGroup>
+                                                            </DrawingImage.Drawing>
+                                                        </DrawingImage>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Button.Content>
+                                        </Button>
+                                        <Button Command="{Binding CloseCommand}"
+                                                Style="{StaticResource ButtonForIconPlacementStyle}"
+                                                Padding="7 5 5 5">
+                                            <Button.Content>
+                                                <Image>
+                                                    <Image.Source>
+                                                        <DrawingImage>
+                                                            <DrawingImage.Drawing>
+                                                                <DrawingGroup ClipGeometry="M0,0 V12 H12 V0 H0 Z">
+                                                                    <GeometryDrawing Brush="{DynamicResource MainFgColorBrush}" Geometry="F1 M12,12z M0,0z M11.5303,1.53033C11.8232,1.23744 11.8232,0.762563 11.5303,0.46967 11.2374,0.176777 10.7626,0.176777 10.4697,0.46967L11.5303,1.53033z M0.46967,10.4697C0.176777,10.7626 0.176777,11.2374 0.46967,11.5303 0.762564,11.8232 1.23744,11.8232 1.53033,11.5303L0.46967,10.4697z M1.53034,0.46967C1.23745,0.176777 0.762574,0.176777 0.46968,0.46967 0.176787,0.762563 0.176787,1.23744 0.46968,1.53033L1.53034,0.46967z M10.4697,11.5303C10.7626,11.8232 11.2374,11.8232 11.5303,11.5303 11.8232,11.2374 11.8232,10.7626 11.5303,10.4697L10.4697,11.5303z M10.4697,0.46967L0.46967,10.4697 1.53033,11.5303 11.5303,1.53033 10.4697,0.46967z M0.46968,1.53033L10.4697,11.5303 11.5303,10.4697 1.53034,0.46967 0.46968,1.53033z" />
+                                                                </DrawingGroup>
+                                                            </DrawingImage.Drawing>
+                                                        </DrawingImage>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Button.Content>
+                                        </Button>
                                     </StackPanel>
                                 </Grid>
 

@@ -32,6 +32,22 @@ namespace ToDoApp.Models
             }
         }
 
+        private string _cuttedDesc;
+        public string CuttedDescription
+        {
+            get => _cuttedDesc;
+            set
+            {
+                if (_cuttedDesc == value)
+                {
+                    return;
+                }
+
+                _cuttedDesc = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _description;
         /// <summary>
         /// Description of to do
@@ -50,6 +66,15 @@ namespace ToDoApp.Models
                 OnPropertyChanged();
 
                 DescriptionChangedEvent?.Invoke(this, EventArgs.Empty);
+
+                if (_description.Length < 60)
+                {
+                    CuttedDescription = _description;
+                }
+                else
+                {
+                    CuttedDescription = _description.Substring(0, 59).Replace("\r\n", " ") + "...";
+                }
             }
         }
 

@@ -45,6 +45,9 @@
     <Page Update="Resources\DrawingImages.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Resources\ListBoxStyleTemplates.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Resources\MenuStyles.xaml">
       <SubType>Designer</SubType>
     </Page>
