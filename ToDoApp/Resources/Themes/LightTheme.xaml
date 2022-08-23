@@ -2,7 +2,18 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Color x:Key="MainBgColor">#FAFAFF</Color>
-    <SolidColorBrush x:Key="MainBgColorBrush" Color="{StaticResource MainBgColor}"/>
+    <!--<SolidColorBrush x:Key="MainBgColorBrush" Color="{StaticResource MainBgColor}"/>-->
+
+    <LinearGradientBrush x:Key="MainBgColorBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Color="#A8D6E2" Offset="0.0" />
+        <GradientStop Color="#C0C4E6" Offset="1.0" />
+    </LinearGradientBrush>
+
+    <Color x:Key="ThirdMainBgColor">#fff</Color>
+    <SolidColorBrush x:Key="ThirdMainBgColorBrush" Color="{StaticResource ThirdMainBgColor}" Opacity="0.4"/>
+
+    <Color x:Key="dottwoMainBgColor">#fff</Color>
+    <SolidColorBrush x:Key="dottwoMainBgColorBrush" Color="{StaticResource dottwoMainBgColor}" Opacity="0.2"/>
 
     <Color x:Key="MainBorderColor">#d8d8dc</Color>
     <SolidColorBrush x:Key="MainBorderColorBrush" Color="{StaticResource MainBgColor}"/>
@@ -19,10 +30,10 @@
     <Color x:Key="NotDoneColor">#EEF0F2</Color>
     <SolidColorBrush x:Key="NotDoneColorBrush" Color="{StaticResource NotDoneColor}"/>
 
-    <Color x:Key="ButtonBgColor">#309F97</Color>
-    <SolidColorBrush x:Key="ButtonBgColorBrush" Color="{StaticResource ButtonBgColor}"/>    
+    <Color x:Key="ButtonBgColor">#E5F2F7</Color>
+    <SolidColorBrush x:Key="ButtonBgColorBrush" Color="{StaticResource ButtonBgColor}"/>
 
-    <Color x:Key="MainFgColor">#1c1c1e</Color>
+    <Color x:Key="MainFgColor">#828AB6</Color>
     <SolidColorBrush x:Key="MainFgColorBrush" Color="{StaticResource MainFgColor}"/>
 
     <Color x:Key="MouseOverBorderColor">#007aff</Color>

@@ -6,6 +6,8 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Windows;
+using System.Windows.Media;
 
 namespace ToDoApp.Helpers
 {
@@ -146,6 +148,25 @@ namespace ToDoApp.Helpers
                 rngCsp.GetBytes(randomBytes);
             }
             return randomBytes;
+        }
+
+        public static T FindDescendant<T>(this DependencyObject d) where T : DependencyObject
+        {
+            if (d == null)
+                return null;
+
+            var childCount = VisualTreeHelper.GetChildrenCount(d);
+
+            for (var i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(d, i);
+
+                var result = child as T ?? FindDescendant<T>(child);
+
+                if (result != null)
+                    return result;
+            }
+            return null;
         }
     }
 }

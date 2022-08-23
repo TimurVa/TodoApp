@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Data.Sqlite;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
@@ -135,12 +137,14 @@ namespace ToDoApp.ViewModels
         private ICommand _setTodoItemAsDoneCommand;
         private ICommand _filterTodoItemsCommand;
         private ICommand _searchCommand;
+        private ICommand _loadMoreItems;
 
         public ICommand AddNewTodoItemCommand => _addNewTodoItemCommand ??= new RelayCommand(async (p) => await AddNewTodoItemCommand_Executed(p));
         public ICommand RemoveTodoItemCommand => _removeTodoItemCommand ??= new RelayCommand(async (p) => await RemoveTodoItemCommand_Executed(p));
         public ICommand SetTodoItemAsDoneCommand => _setTodoItemAsDoneCommand ??= new RelayCommand(async (p) => await SetTodoItemAsDoneCommand_Executed(p));
         public ICommand FilterTodoItemsCommand => _filterTodoItemsCommand ??= new RelayCommand(FilterTodoItemsCommand_Executed);
         public ICommand SearchCommand => _searchCommand ??= new RelayCommand(SearchCommand_Executed, SearchCommand_CanExecute);
+        public ICommand LoadMoreItemsCommand => _loadMoreItems ??= new RelayCommand(async (p) => await LoadMoreItemsCommand_Executed(p));
 
         private async Task AddNewTodoItemCommand_Executed(object obj)
         {
@@ -224,6 +228,12 @@ namespace ToDoApp.ViewModels
                     FilteredTodoModels.Remove(tm);
                 }
             }
+        }
+
+        private async Task<bool> Get()
+        {
+            await Task.Delay(5000);
+            return true;
         }
 
         private async Task UpdateTodoItem(int property, TodoModel todo, CancellationToken token = default)
@@ -388,22 +398,102 @@ namespace ToDoApp.ViewModels
                 FilteredTodoModels = new ObservableCollection<TodoModel>(TodoModels);
             }
         }
+
+
+        #region Load more items
+        private async Task LoadMoreItemsCommand_Executed(object p)
+        {
+            await LoadItems();
+        }
         #endregion
+
+        #endregion cmds
 
         private async Task LoadItems()
         {
             try
             {
-                await foreach (var item in _todoRepo.GetAllAsync())
+                if (_searchText != string.Empty || _lastFilterByIsDone != null)
                 {
-                    TodoModels.Insert(0, item);
+                    return;
+                }
+
+                int count = TodoModels.Count;
+                await foreach (var item in LoadMore().ConfigureAwait(false))
+                {
+                    TodoModels.Add(item);
+                }
+
+                if (TodoModels.Count == count)
+                {
+                    return;
                 }
 
                 FilteredTodoModels = new ObservableCollection<TodoModel>(TodoModels);
+
+                //await foreach (var item in _todoRepo.GetAllAsync())
+                //{
+                //    TodoModels.Insert(0, item);
+                //}
+
+                //FilteredTodoModels = new ObservableCollection<TodoModel>(TodoModels);
             }
             catch (Exception e)
             {
                 System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
+        }
+
+        private async IAsyncEnumerable<TodoModel> LoadMore()
+        {
+            //System.Diagnostics.Debug.WriteLine("LoadMore " + System.Threading.Thread.CurrentThread.ManagedThreadId);
+            int loaded_count = _todoModels.Count;
+
+            await Static.Semaphore.WaitAsync().ConfigureAwait(false);
+
+            try
+            {
+                using SqliteConnection sqliteConnection = new SqliteConnection(Static.DatabasePath);
+                await sqliteConnection.OpenAsync().ConfigureAwait(false);
+
+                using SqliteCommand getItemsCommand = sqliteConnection.CreateCommand();
+                getItemsCommand.CommandText = $"select * from {Constants.TODO_TABLE_NAME} order by ROWID desc LIMIT 10 OFFSET {loaded_count}";
+
+                using var reader = await getItemsCommand.ExecuteReaderAsync().ConfigureAwait(false);
+
+                if (reader.HasRows)
+                {
+                    while (await reader.ReadAsync().ConfigureAwait(false))
+                    {
+                        DateTime time = new DateTime(reader.GetInt64(2));
+
+                        time = time.Add(DateTimeOffset.Now.Offset);
+
+                        TodoModel todoModel = new TodoModel()
+                        {
+                            Id = reader.GetInt64(0),
+                            CreatedTime = time,
+                            Description = reader.GetString(3),
+                            IsDone = reader.GetBoolean(4),
+                            Name = reader.GetString(1)
+                        };
+
+                        long? tics = reader.IsDBNull(5) ? null : reader.GetInt64(5);
+
+                        if (tics == null)
+                        {
+                            todoModel.DoneTime = null;
+                        }
+                        await Task.Yield();
+                        yield return todoModel;
+                    }
+
+                    yield break;
+                }
+            }
+            finally
+            {
+                Static.Semaphore.Release();
             }
         }
     }

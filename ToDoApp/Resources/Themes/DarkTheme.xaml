@@ -7,6 +7,10 @@
     <Color x:Key="MainBorderColor">#8e8e93</Color>
     <SolidColorBrush x:Key="MainBorderColorBrush" Color="{StaticResource MainBgColor}"/>
 
+    <SolidColorBrush x:Key="ThirdMainBgColorBrush" Color="{StaticResource MainBgColor}" Opacity="0.4"/>
+
+    <SolidColorBrush x:Key="dottwoMainBgColorBrush" Color="{StaticResource MainBgColor}" Opacity="0.2"/>
+
     <Color x:Key="SelectedBorderColor">#3b7097</Color>
     <SolidColorBrush x:Key="SelectedBorderColorBrush" Color="{StaticResource SelectedBorderColor}"/>
 
