@@ -68,6 +68,7 @@
         <Setter Property="Padding" Value="7 4"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{DynamicResource MainFgColorBrush}"/>
         <Setter Property="FontSize" Value="12"/>
         <Setter Property="Template">

@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Nextensor\VlvCustomControlsDotNet\VlvCustomControlsDotNet.csproj" />
+    <ProjectReference Include="..\VlvCustomControlsDotNet\VlvCustomControlsDotNet.csproj" />
   </ItemGroup>
 
 </Project>

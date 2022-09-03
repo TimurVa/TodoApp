@@ -1,0 +1,281 @@
+﻿<Window x:Class="VlvCustomControlsDotNet.VlvSaveBoxWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        Background="Transparent"
+        WindowStartupLocation="CenterOwner"
+        ShowInTaskbar="False"
+        Topmost="True"
+        MinHeight="150"
+        MinWidth="320"
+        AllowsTransparency="True"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="NoResize"
+        xmlns:vlv="clr-namespace:VlvCustomControlsDotNet"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <Style x:Key="DefaultButtonStyle" TargetType="Button">
+            <Setter Property="FontFamily" Value="{StaticResource Segoe}"/>
+            <Setter Property="Padding" Value="5 3"/>
+            <Setter Property="Margin" Value="2 0"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border"
+                            BorderThickness="1"
+                            BorderBrush="Transparent"
+                            Background="Transparent">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                      Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="#FF34A9A0"/>
+                                            </ColorAnimationUsingKeyFrames>
+
+                                            <!--<DoubleAnimation Storyboard.TargetName="Border"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.7" Duration="0"/>-->
+                                        </Storyboard>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                      Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="#FF34A9A0"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                      Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="#6C26A0DA"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Border"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.7" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid>
+                                <ContentPresenter Content="{TemplateBinding Content}"
+                                x:Name="contentSite"
+                                SnapsToDevicePixels="True"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SelectedDefaultButtonStyle" TargetType="Button">
+            <Setter Property="FontFamily" Value="{StaticResource Segoe}"/>
+            <Setter Property="Padding" Value="5 3"/>
+            <Setter Property="Margin" Value="2 0"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Border"
+                            BorderThickness="1"
+                            Background="#3D26A0DA">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border"
+                                                                      Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+                                                <EasingColorKeyFrame KeyTime="0" Value="#FF34A9A0"/>
+                                            </ColorAnimationUsingKeyFrames>
+                                            <!--<DoubleAnimation Storyboard.TargetName="Border"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.7" Duration="0"/>-->
+                                        </Storyboard>
+                                    </VisualState>
+
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="Border"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="0.4" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid>
+                                <ContentPresenter Content="{TemplateBinding Content}"
+                                x:Name="contentSite"
+                                SnapsToDevicePixels="True"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="30"
+                      />
+    </WindowChrome.WindowChrome>
+
+    <Border Background="White" BorderThickness="1" BorderBrush="#ebebeb">
+        <Grid >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border BorderThickness="0 0 0 0.6" Grid.Column="2">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0" Margin="7 0">
+                            <TextBlock Text="{Binding Title}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <StackPanel Orientation="Horizontal" Grid.Column="2">
+                            <Button WindowChrome.IsHitTestVisibleInChrome="True"
+                                    x:Name="CloseButton"
+                                    Foreground="Black"
+                                    Click="CloseButton_Click">
+                                <Button.Style>
+                                    <Style TargetType="{x:Type Button}">
+                                        <Setter Property="BorderThickness" Value="0"/>
+                                        <Setter Property="BorderBrush" Value="Transparent"/>
+                                        <Setter Property="Background" Value="#FF283E4A"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="Padding" Value="7"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}">
+                                                        <Grid>
+                                                            <ContentPresenter
+                                                                Margin="{TemplateBinding Padding}"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Button.Style>
+                                <Button.Content>
+                                    <Grid>
+                                        <Image Height="5.9" Width="5.9">
+                                            <Image.Source>
+                                                <DrawingImage>
+                                                    <DrawingImage.Drawing>
+                                                        <DrawingGroup ClipGeometry="M0,0 V22 H21 V0 H0 Z">
+                                                            <GeometryDrawing>
+                                                                <GeometryDrawing.Pen>
+                                                                    <Pen Brush="#ffffff" Thickness="2" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
+                                                                </GeometryDrawing.Pen>
+                                                                <GeometryDrawing.Geometry>
+                                                                    <LineGeometry StartPoint="20.1525,1.3536" EndPoint="0.3535,21.1525" />
+                                                                </GeometryDrawing.Geometry>
+                                                            </GeometryDrawing>
+                                                            <GeometryDrawing Geometry="F1 M21,22z M0,0z M0.353553,1.20101L20.1525,21">
+                                                                <GeometryDrawing.Pen>
+                                                                    <Pen Brush="#ffffff" Thickness="2" StartLineCap="Flat" EndLineCap="Flat" LineJoin="Miter" />
+                                                                </GeometryDrawing.Pen>
+                                                            </GeometryDrawing>
+                                                        </DrawingGroup>
+                                                    </DrawingImage.Drawing>
+                                                </DrawingImage>
+                                            </Image.Source>
+                                        </Image>
+                                    </Grid>
+                                </Button.Content>
+                            </Button>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"/>
+                        <RowDefinition Height="50"/>
+                    </Grid.RowDefinitions>
+                    <ScrollViewer Margin="7" 
+                                  VerticalScrollBarVisibility="Auto">
+                        <TextBlock Grid.Column="1"
+                                   MaxWidth="400"
+                                   Style="{StaticResource DefaultTextBlockStyleAligned}"
+                                   Foreground="Black"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Left"
+                                   Name="MessagePlaceholder"
+                                   TextWrapping="Wrap"
+                                   Margin="5"
+                                   />
+                    </ScrollViewer>
+                    <Border Grid.Row="1">
+                        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+                            <Button Content="Save"
+                                x:Name="SaveButton"
+                                Width="60"
+                                Height="25"
+                                FontSize="10"
+                                Margin="0 0 10 0"
+                                Style="{StaticResource SelectedDefaultButtonStyle}"
+                                Click="Save_Click"
+                                />
+                            <Button Content="Don't Save"
+                                x:Name="DontSaveButton"
+                                Width="60"
+                                Height="25"
+                                FontSize="10"
+                                Margin="2"
+                                Style="{StaticResource DefaultButtonStyle}"
+                                Click="Dont_Click"
+                                />
+                            <Button Content="Cancel"
+                                x:Name="CancelButton"
+                                Width="60"
+                                Height="25"
+                                FontSize="10"
+                                Padding="0"
+                                Margin="2"
+                                Style="{StaticResource DefaultButtonStyle}"
+                                Click="Cancel_Click"
+                                />
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+
+</Window>
