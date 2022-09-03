@@ -17,37 +17,36 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Page.Resources>
 
-    <Grid MouseEnter="Grid_MouseEnter"
-          MouseLeave="Grid_MouseLeave"
-          Background="Transparent"
-          >
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <AdornerDecorator>
+        <Grid Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal"
+            <AdornerDecorator>
+                <StackPanel Orientation="Horizontal"
                     Margin="10 3 10 2"
                     x:Name="FiltersRow">
-            <Button Content="+"
+                    <Button Content="+"
                     FontSize="12"
                     Padding="8 0 8 1"
                     Margin="0"
                     Style="{StaticResource ButtonWithBottomBlurStyle}"
                     Command="{Binding AddNewTodoItemCommand}"/>
 
-            <Button Content="Filter by completeness"
+                    <Button Content="Filter by completeness"
                     Margin="5 0"
                     Style="{StaticResource ButtonWithBottomBlurStyle}"
                     Command="{Binding FilterTodoItemsCommand}"
                     CommandParameter="1"/>
 
-            <Button Content="Clear filteres"
+                    <Button Content="Clear filteres"
                     Style="{StaticResource ButtonWithBottomBlurStyle}"
                     Command="{Binding FilterTodoItemsCommand}"
                     CommandParameter="0"/>
 
-            <vlv:SearchTextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <vlv:SearchTextBox Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Placeholder="Search..."
                                Width="100"
                                Height="18"
@@ -59,163 +58,105 @@
                                SearchCommand="{Binding SearchCommand}"
                                BorderBrush="{StaticResource ThirdMainBgColorBrush}"
                                Padding="3 0"/>
-        </StackPanel>
 
-        <Grid Grid.Row="1"
+                    <TextBox Name="tb2" Width="150" AcceptsReturn="True"
+                             TextChanged="tb2_TextChanged"/>
+                    
+                    <TextBox Name="tb" Width="150" AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             SelectionChanged="tb_SelectionChanged"/>
+
+                    <Button Content="invalidate" Click="Button_Click"/>
+
+                </StackPanel>
+            </AdornerDecorator>
+
+            <Grid Grid.Row="1"
               Margin="10 0 0 0">
-            <helpers:VlvListBoxScrollEnded ItemsSource="{Binding FilteredTodoModels}"
+                <helpers:VlvListBoxScrollEnded ItemsSource="{Binding FilteredTodoModels}"
                                            BorderThickness="0"
                                            Background="{DynamicResource MainBgColorBrush}"
                                            VerticalAlignment="Stretch"
                                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                            ScrollEndedCommand="{Binding LoadMoreItemsCommand}">
-                <helpers:VlvListBoxScrollEnded.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="Margin" Value="0 3"/>
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Background" Value="{DynamicResource ThirdMainBgColorBrush}"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListBoxItem">
-                                    <Border x:Name="Part_Border"
+                    <helpers:VlvListBoxScrollEnded.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Margin" Value="0 3"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Background" Value="{DynamicResource ThirdMainBgColorBrush}"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListBoxItem">
+                                        <Border x:Name="Part_Border"
                                         Padding="2"
                                         SnapsToDevicePixels="True"
                                         Background="{TemplateBinding Background}"
                                         BorderBrush="{TemplateBinding BorderBrush}"
                                         BorderThickness="{TemplateBinding BorderThickness}"
                                         CornerRadius="7">
-                                        <ContentPresenter/>
-                                    </Border>
-                                    <!--Triggers-->
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter Property="BorderBrush" Value="{DynamicResource SelectedBorderColorBrush}" TargetName="Part_Border"/>
-                                            <!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>-->
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </Trigger>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>-->
-                                            <Setter Property="BorderBrush" Value="{DynamicResource GrayColorBrush}" TargetName="Part_Border"/>
-                                            <Setter Property="Foreground" Value="White"/>
-                                        </Trigger>
+                                            <ContentPresenter/>
+                                        </Border>
+                                        <!--Triggers-->
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="BorderBrush" Value="{DynamicResource SelectedBorderColorBrush}" TargetName="Part_Border"/>
+                                                <!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>-->
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <!--<Setter TargetName="Part_Border" Property="Background" Value="{StaticResource VisualStudioTabControlBrush}"/>-->
+                                                <Setter Property="BorderBrush" Value="{DynamicResource GrayColorBrush}" TargetName="Part_Border"/>
+                                                <Setter Property="Foreground" Value="White"/>
+                                            </Trigger>
 
-                                        <DataTrigger Binding="{Binding IsDone}" Value="True">
-                                            <Setter Property="Background" Value="{DynamicResource dottwoMainBgColorBrush}"/>
-                                        </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsDone}" Value="True">
+                                                <Setter Property="Background" Value="{DynamicResource dottwoMainBgColorBrush}"/>
+                                            </DataTrigger>
 
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </helpers:VlvListBoxScrollEnded.ItemContainerStyle>
-                <helpers:VlvListBoxScrollEnded.ItemTemplate>
-                    <DataTemplate>
-                        <Expander>
-                            <Expander.Style>
-                                <Style TargetType="Expander">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                </Style>
-                            </Expander.Style>
-                            <Expander.Header>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid VerticalAlignment="Center"
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </helpers:VlvListBoxScrollEnded.ItemContainerStyle>
+                    <helpers:VlvListBoxScrollEnded.ItemTemplate>
+                        <DataTemplate>
+                            <Expander>
+                                <Expander.Style>
+                                    <Style TargetType="Expander">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    </Style>
+                                </Expander.Style>
+                                <Expander.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid VerticalAlignment="Center"
                                       Width="{Binding RelativeSource={RelativeSource
                                       Mode=FindAncestor,
                                       AncestorType={x:Type Expander}},
                                       Path=ActualWidth}">
-                                        <TextBlock Text="{Binding CuttedDescription}"
+                                            <TextBlock Text="{Binding CuttedDescription}"
                                                FontSize="12"
-                                             Foreground="{DynamicResource MainFgColorBrush}"/>
-                                    </Grid>
+                                             Foreground="{DynamicResource MainFgColorBrush}">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsDone}" Value="true">
+                                                                <Setter Property="Opacity" Value="0.3"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Grid>
 
-                                    <Grid Grid.Column="1"
+                                        <Grid Grid.Column="1"
                                       VerticalAlignment="Center">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-
-                                        <Button Command="{Binding DataContext.SetTodoItemAsDoneCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
-                                            CommandParameter="{Binding}"
-                                            ToolTip="Toggle">
-                                            <Button.Style>
-                                                <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
-                                                    <Setter Property="Background" Value="Transparent"/>
-                                                    <!--<Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsDone}" Value="true">
-                                                    <Setter Property="Background" Value="#fff"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>-->
-                                                </Style>
-                                            </Button.Style>
-
-                                            <Button.Content>
-                                                <Image Source="{StaticResource CheckedImage}"/>
-                                            </Button.Content>
-                                        </Button>
-
-                                        <Button Style="{StaticResource DangerButtonStyle}"
-                                            Grid.Column="1"
-                                            HorizontalAlignment="Right"
-                                            Command="{Binding DataContext.RemoveTodoItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
-                                            CommandParameter="{Binding}"
-                                            ToolTip="Delete">
-                                            <Button.Content>
-                                                <Grid>
-                                                    <Image Source="{StaticResource CrossImage}"/>
-                                                    <!--<TextBlock Text="x"/>-->
-                                                </Grid>
-                                            </Button.Content>
-                                        </Button>
-                                    </Grid>
-
-                                </Grid>
-                            </Expander.Header>
-                            <Border BorderThickness="0 0 3 0"
-                                Padding="7 3">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <!-- NAME AND TIME -->
-                                    <Grid>
-                                        <StackPanel Orientation="Horizontal"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Stretch">
-                                            <!--<TextBox Text="{Binding Name}"
-                                             Style="{StaticResource DefaultTexBoxStyle}"
-                                             MinWidth="100"
-                                             attached:TextBoxAttachedProperties.BindingOnKeyUp="True"
-                                             Margin="0 0 10 0"
-                                             FontSize="14"/>-->
-                                            <TextBlock>
-                                        <!--<Run Text="Created at:"/>-->
-                                        <Run FontSize="14" 
-                                             Foreground="{DynamicResource MainFgColorBrush}"
-                                             Text="{Binding CreatedTime, StringFormat='{}{0:dd.MM.yyyy, HH:mm}'}"/>
-                                            </TextBlock>
-
-                                            <TextBlock Margin="10 0 0 0"
-                                               Foreground="{DynamicResource MainFgColorBrush}"
-                                               VerticalAlignment="Center"
-                                               Visibility="{Binding IsDone, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                        <Run FontSize="12" 
-                                             Text="{Binding DoneTime, StringFormat='{}{0:dd.MM.yyyy, HH:mm}'}"/>
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </Grid>
-
-                                    <!-- REMOVE ITEM BUTTON -->
-                                    <!--<Grid Grid.Column="1">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="auto"/>
                                                 <ColumnDefinition Width="auto"/>
@@ -227,11 +168,11 @@
                                                 <Button.Style>
                                                     <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
                                                         <Setter Property="Background" Value="Transparent"/>
-                                                        --><!--<Style.Triggers>
-                                                    <DataTrigger Binding="{Binding IsDone}" Value="true">
-                                                        <Setter Property="Background" Value="#fff"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>--><!--
+                                                        <!--<Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsDone}" Value="true">
+                                                    <Setter Property="Background" Value="#fff"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>-->
                                                     </Style>
                                                 </Button.Style>
 
@@ -249,42 +190,126 @@
                                                 <Button.Content>
                                                     <Grid>
                                                         <Image Source="{StaticResource CrossImage}"/>
-                                                        --><!--<TextBlock Text="x"/>--><!--
+                                                        <!--<TextBlock Text="x"/>-->
+                                                    </Grid>
+                                                </Button.Content>
+                                            </Button>
+                                        </Grid>
+
+                                    </Grid>
+                                </Expander.Header>
+                                <Border BorderThickness="0 0 3 0"
+                                Padding="7 3">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <!-- NAME AND TIME -->
+                                        <Grid>
+                                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Stretch">
+                                                <!--<TextBox Text="{Binding Name}"
+                                             Style="{StaticResource DefaultTexBoxStyle}"
+                                             MinWidth="100"
+                                             attached:TextBoxAttachedProperties.BindingOnKeyUp="True"
+                                             Margin="0 0 10 0"
+                                             FontSize="14"/>-->
+                                                <TextBlock>
+                                        <!--<Run Text="Created at:"/>-->
+                                        <Run FontSize="14" 
+                                             Foreground="{DynamicResource MainFgColorBrush}"
+                                             Text="{Binding CreatedTime, StringFormat='{}{0:dd.MM.yyyy, HH:mm}'}"/>
+                                                </TextBlock>
+
+                                                <TextBlock Margin="10 0 0 0"
+                                               Foreground="{DynamicResource MainFgColorBrush}"
+                                               VerticalAlignment="Center"
+                                               Visibility="{Binding IsDone, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                        <Run FontSize="12" 
+                                             Text="{Binding DoneTime, StringFormat='{}{0:dd.MM.yyyy, HH:mm}'}"/>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Grid>
+
+                                        <!-- REMOVE ITEM BUTTON -->
+                                        <!--<Grid Grid.Column="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Button Command="{Binding DataContext.SetTodoItemAsDoneCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                            CommandParameter="{Binding}"
+                                            ToolTip="Toggle">
+                                                <Button.Style>
+                                                    <Style TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        -->
+                                        <!--<Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsDone}" Value="true">
+                                                        <Setter Property="Background" Value="#fff"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>-->
+                                        <!--
+                                                    </Style>
+                                                </Button.Style>
+
+                                                <Button.Content>
+                                                    <Image Source="{StaticResource CheckedImage}"/>
+                                                </Button.Content>
+                                            </Button>
+
+                                            <Button Style="{StaticResource DangerButtonStyle}"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            Command="{Binding DataContext.RemoveTodoItemCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}}"
+                                            CommandParameter="{Binding}"
+                                            ToolTip="Delete">
+                                                <Button.Content>
+                                                    <Grid>
+                                                        <Image Source="{StaticResource CrossImage}"/>
+                                                        -->
+                                        <!--<TextBlock Text="x"/>-->
+                                        <!--
                                                     </Grid>
                                                 </Button.Content>
                                             </Button>
                                         </Grid>-->
 
-                                    <!-- DESCRIPTION OF TODO -->
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox Text="{Binding Description}"
+                                        <!-- DESCRIPTION OF TODO -->
+                                        <Grid Grid.Row="1">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Text="{Binding Description}"
                                          AcceptsReturn="True"
                                          TextWrapping="Wrap"
                                          attached:TextBoxAttachedProperties.BindingOnKeyUp="True"
                                          FontSize="14"
                                          Foreground="{DynamicResource MainFgColorBrush}"
                                          >
-                                            <TextBox.Style>
-                                                <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTexBoxStyle}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsDone}" Value="true">
-                                                            <Setter Property="Opacity" Value="0.3"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </TextBox.Style>
-                                        </TextBox>
+                                                <TextBox.Style>
+                                                    <Style TargetType="TextBox" BasedOn="{StaticResource DefaultTexBoxStyle}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsDone}" Value="true">
+                                                                <Setter Property="Opacity" Value="0.3"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBox.Style>
+                                            </TextBox>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                            </Border>
+                                </Border>
                             </Expander>
-                    </DataTemplate>
-                </helpers:VlvListBoxScrollEnded.ItemTemplate>
-            </helpers:VlvListBoxScrollEnded>
+                        </DataTemplate>
+                    </helpers:VlvListBoxScrollEnded.ItemTemplate>
+                </helpers:VlvListBoxScrollEnded>
+            </Grid>
         </Grid>
-    </Grid>
+    </AdornerDecorator>
 </Page>

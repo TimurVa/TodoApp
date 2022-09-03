@@ -1,0 +1,558 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vlv="clr-namespace:VlvCustomControlsDotNet"
+    xmlns:converter="clr-namespace:VlvCustomControlsDotNet.Classes.Converters"
+    xmlns:local="clr-namespace:TVCustomControlLibrary">
+
+    <converter:ColorToBrushConverter x:Key="ColorToBrushConverter"/>
+    <converter:AdditionalConverter x:Key="AdditionalConverter"/>
+    <converter:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+    <SolidColorBrush x:Key="popUpBackgroundBrush" Color="#ebebeb"/>
+
+    <DrawingBrush  x:Key="CheckerBrush" Viewport="0,0,10,10" ViewportUnits="Absolute" TileMode="Tile">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <GeometryDrawing Brush="White">
+                    <GeometryDrawing.Geometry>
+                        <RectangleGeometry Rect="0,0 100,100" />
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+                <GeometryDrawing Brush="LightGray">
+                    <GeometryDrawing.Geometry>
+                        <GeometryGroup>
+                            <RectangleGeometry Rect="0,0 50,50" />
+                            <RectangleGeometry Rect="50,50 50,50" />
+                        </GeometryGroup>
+                    </GeometryDrawing.Geometry>
+                </GeometryDrawing>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
+
+    <!-- ProgressBar template -->
+    <Style TargetType="{x:Type local:VlvProgressBar}">
+        <Setter Property="Background" Value="AliceBlue"/>
+        <Setter Property="Foreground" Value="Green"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:VlvProgressBar}">
+                    <Grid>
+                        <TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                            TextTrimming="CharacterEllipsis"
+                            IsEnabled="False"
+                            HorizontalAlignment="Center"
+                            Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextBlockVisibility}"
+                            Panel.ZIndex="1"
+                            Foreground="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextBlockForegroundColorBrush}"
+                            FontSize="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextBlockFontSize}"
+                            />
+                        <Border x:Name="PART_Track" Background="{TemplateBinding Background}" CornerRadius="60">
+                            <Canvas x:Name="PART_Indicator"
+                                ClipToBounds="True"
+                                Background="{TemplateBinding Foreground}"
+                                HorizontalAlignment="Left">
+                                <local:ProgressBarShape x:Name="Shape"
+                                                Panel.ZIndex="10"
+                                                Shape="{TemplateBinding ShapeType}"/>
+                                                
+                                                <!-- SOMEHOW STOPPED WORK -->
+                                                <!--Fill="{TemplateBinding Foreground}"-->
+                                <!--<TextBlock Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Value, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TextBlockVisibility, StringFormat={}{0:0}%}"
+                                   Panel.ZIndex="1"
+                                   Foreground="White"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                    >
+                                </TextBlock>-->
+                            </Canvas>
+                            <!--Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>-->
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation" Value="Vertical">
+                            <Setter TargetName="PART_Indicator" Property="Width" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Setter TargetName="PART_Indicator" Property="Height" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Setter TargetName="PART_Indicator" Property="VerticalAlignment" Value="Bottom"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Double click textblock to texbox template -->
+    <Style TargetType="{x:Type vlv:EditableTextBlock}">
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="CaretBrush" Value="AliceBlue"/>
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type vlv:EditableTextBlock}">
+                    <Grid x:Name="PART_GridContainer"
+                          Background="{TemplateBinding Background}"
+                          Width="{TemplateBinding Width}"
+                          Height="{TemplateBinding Height}">
+
+                        <!-- PLACEHOLDER TEXT IF NEED-->
+                        <TextBlock IsHitTestVisible="False"
+                               Text="{TemplateBinding PlaceholderText}"
+                               x:Name="placeholder"
+                               FontFamily="{TemplateBinding FontFamily}"
+                               FontSize="{TemplateBinding FontSize}"
+                               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                               Opacity="0.4"
+                               TextAlignment="{TemplateBinding TextAlignment}"
+                               Background="Transparent"
+                               Foreground="{TemplateBinding Foreground}">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type vlv:EditableTextBlock}}}" Value="">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <!-- TEXTBLOCK WITH ACTUAL TEXT -->
+                        <TextBlock x:Name="PART_TextBlock"
+                                   FontSize="{TemplateBinding FontSize}"
+                                   VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                   TextTrimming="CharacterEllipsis"
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   Text="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type vlv:EditableTextBlock}}}"
+                                   TextWrapping="{TemplateBinding TextWrapping}"
+                                   Width="{TemplateBinding Width}"
+                                   MinWidth="{TemplateBinding MinWidth}"
+                                   Height="{TemplateBinding Height}"
+                                   MinHeight="{TemplateBinding MinHeight}"
+                                   Margin="{TemplateBinding Margin}"
+                                   Padding="{TemplateBinding Padding}"
+                                   TextAlignment="{TemplateBinding TextAlignment}"
+                                   />
+                        
+                        <!-- TEXT BOX TO CHANGE ACTUAL TEXT -->
+                        <TextBox x:Name="PART_TextBox"
+                                     Visibility="Hidden"
+                                     BorderThickness="{TemplateBinding VlvBorderThickness}"
+                                     FontSize="{TemplateBinding FontSize}"
+                                     FontFamily="{TemplateBinding FontFamily}"
+                                     VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                     Background="{TemplateBinding TextBoxBackgroundColor}"
+                                     Foreground="{TemplateBinding TextBoxForeground}"
+                                     CaretBrush="{TemplateBinding CaretBrush}"
+                                     Margin="{TemplateBinding Margin}"
+                                     Padding="{TemplateBinding Padding}"
+                                     AcceptsReturn="false"
+                                     TextWrapping="{TemplateBinding TextWrapping}"
+                                     MaxLength="{TemplateBinding MaxLength}"
+                                     Text="{Binding Path=Text, RelativeSource={RelativeSource AncestorType={x:Type vlv:EditableTextBlock}}}"
+                                     Width="{TemplateBinding Width}"
+                                     MinWidth="{TemplateBinding MinWidth}"
+                                     Height="{TemplateBinding Height}"
+                                     MinHeight="{TemplateBinding MinHeight}"
+                                     TextAlignment="{TemplateBinding TextAlignment}">
+                        </TextBox>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate x:Key="ColorItemTemplate">
+        <Grid>
+            <Border Margin="0" 
+                    Padding="0"
+                    BorderBrush="Black"
+                    Background="{StaticResource CheckerBrush}"
+                    BorderThickness="1">
+                <Rectangle MinWidth="11" 
+                           ToolTip="{Binding Name}" 
+                           MinHeight="11" 
+                           Fill="{Binding Color, Converter={StaticResource ColorToBrushConverter}}">
+                </Rectangle>
+            </Border>
+        </Grid>
+    </DataTemplate>
+
+
+    <Style x:Key="ColorPickerToggleButtonStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid SnapsToDevicePixels="True">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter Content="{TemplateBinding Content}"
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                              ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ColorPickerContentStyle" TargetType="{x:Type ContentControl}">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Border Background="{StaticResource CheckerBrush}"
+                            Padding="0"
+                            Margin="0"
+                            SnapsToDevicePixels="True">
+                        <Rectangle SnapsToDevicePixels="True"
+                            Fill="{Binding SelectedColor, 
+                            RelativeSource={RelativeSource Mode=FindAncestor, 
+                            AncestorType={x:Type vlv:VlvColorPicker}}, Converter={StaticResource ColorToBrushConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="lbItemStyle" TargetType="ListBoxItem">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Margin" Value="0 1 1 0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <Border x:Name="Border"
+                        SnapsToDevicePixels="true">
+                        <Border.Background>
+                            <SolidColorBrush Color="Transparent" />
+                        </Border.Background>
+                        <ContentPresenter x:Name="contentSite" Margin="{TemplateBinding Padding}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard Storyboard.TargetProperty="Opacity">
+                                        <DoubleAnimation Duration="0:0:0.25" To=".7"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard Storyboard.TargetProperty="Opacity">
+                                        <DoubleAnimation Duration="0:0:0.25" To="1"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                            <!--<Setter TargetName="border" Property="Background" Value="{StaticResource BackgroundFigmaColorBrush}"/>-->
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type ListBox}" x:Key="LbStyle">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="MaxHeight" Value="500"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type vlv:VlvColorPicker}}, Path=MaxDropDownWidth, 
+            Converter={StaticResource AdditionalConverter}, ConverterParameter=-5}">
+        </Setter>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <WrapPanel Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=ListBox}, Path=ActualWidth, 
+                        Converter={StaticResource AdditionalConverter}, ConverterParameter=-5}"
+                               />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemTemplate" Value="{StaticResource ColorItemTemplate}"/>
+    </Style>
+    
+    <Style TargetType="{x:Type vlv:VlvColorPicker}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="MaxDropDownWidth" Value="150"/>
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type vlv:VlvColorPicker}">
+                    <Grid>
+                        <ToggleButton x:Name="PART_ToggleButton" 
+                                      MinHeight="10"
+                                      MinWidth="10"
+                                      IsTabStop="True"
+                                      Height="{TemplateBinding Height}"
+                                      Background="{TemplateBinding Background}"
+                                      BorderBrush="{TemplateBinding BorderBrush}"
+                                      BorderThickness="{TemplateBinding BorderThickness}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      Padding="{TemplateBinding Margin}"
+                                      IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsOpend}"
+                                      Style="{StaticResource ColorPickerToggleButtonStyle}">
+                            <Border Margin="{TemplateBinding Padding}" Background="White">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentControl Style="{StaticResource ColorPickerContentStyle}"
+                                                    Width="{TemplateBinding Width}"
+                                                    SnapsToDevicePixels="True"
+                                                    Height="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualHeight}"/>
+                                          <!--Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedColor, Converter={StaticResource ColorToBrushConverter}}"-->
+                                    <Grid Grid.Column="1"
+                                          Visibility="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsDropDownArrowVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                          Background="#fff">
+                                        <Path x:Name="Arrow" 
+                                            Data="M 1,1.5 L 4.6,6 L 8,1.5" 
+                                            HorizontalAlignment="Right" 
+                                            SnapsToDevicePixels="false" 
+                                            StrokeThickness="1" 
+                                            Stroke="{TemplateBinding ArrowColorBrush}"
+                                            Grid.Column="1"
+                                            Margin="1 0"
+                                            VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </ToggleButton>
+
+                        <Popup Name="PART_Popup"
+                            StaysOpen="False"
+                            Focusable="False"
+                            Width="{TemplateBinding MaxDropDownWidth}"
+                            IsOpen="{Binding ElementName=PART_ToggleButton, Path=IsChecked}"
+                            PopupAnimation="Slide">
+                            <Border Padding="0"
+                                    Background="{StaticResource popUpBackgroundBrush}">
+                                <Grid Margin="2">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto"/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <!-- STANDARD COLORS -->
+                                    <Border Margin="0 0 0 10">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid Margin="10 0 0 0">
+                                                <TextBlock Text="{Binding TextStandardColors, RelativeSource={RelativeSource TemplatedParent}}"
+                                                           Foreground="Black"/>
+                                            </Grid>
+
+                                            <ListBox x:Name="PART_ColorItems" 
+                                                Grid.Row="1"
+                                                ItemsSource="{Binding ColorItems, RelativeSource={RelativeSource TemplatedParent}}"
+                                                ItemContainerStyle="{StaticResource lbItemStyle}"
+                                                Style="{StaticResource LbStyle}">
+                                            </ListBox>
+                                        </Grid>
+                                    </Border>
+
+                                    <!-- ALL COLORS -->
+                                    <ListBox x:Name="PART_AllColors"
+                                             Grid.Row="1"
+                                             ItemsSource="{Binding AllColors, RelativeSource={RelativeSource TemplatedParent}}"
+                                             ItemContainerStyle="{StaticResource lbItemStyle}"
+                                             Style="{StaticResource LbStyle}"/>
+                                </Grid>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type vlv:ButtonWithImageSourceControl}">
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="Segoe UI"/>
+        <Setter Property="MarginBetweenImageSource" Value="5,0"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type vlv:ButtonWithImageSourceControl}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{TemplateBinding Text}"
+                                       FontSize="{TemplateBinding FontSize}"
+                                       FontFamily="{TemplateBinding FontFamily}"
+                                       Foreground="{TemplateBinding Foreground}"
+                                       HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                       VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                       TextAlignment="Center"/>
+
+                            <Grid Grid.Column="1"
+                                  Margin="{TemplateBinding MarginBetweenImageSource}">
+                                <Image Source="{TemplateBinding ImageSource}"
+                                       HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                       VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                       Width="{TemplateBinding ImageSourceWidth}"
+                                       Height="{TemplateBinding ImageSourceHeight}"/>
+                            </Grid>
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+
+    <Style TargetType="{x:Type vlv:SearchTextBox}">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#8e8e93"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="CornerRadius" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type vlv:SearchTextBox}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            x:Name="PART_Border">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid Grid.Column="0">
+                                
+                                <!-- PLACEHOLDER TEXT IF NEED-->
+                                <TextBlock IsHitTestVisible="False"
+                                    Text="{TemplateBinding Placeholder}"
+                                    x:Name="PART_Placeholder"
+                                    Opacity="0.4"
+                                    Background="Transparent"
+                                    HorizontalAlignment="Left"
+                                    Margin="{TemplateBinding Padding}"
+                                    Foreground="{TemplateBinding Foreground}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Text, 
+                                                             RelativeSource={RelativeSource TemplatedParent}}" 
+                                                             Value="">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+
+                                <TextBox x:Name="PART_Textbox"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         BorderBrush="Transparent"
+                                         Foreground="{TemplateBinding Foreground}"
+                                         CaretBrush="{TemplateBinding Foreground}"
+                                         Margin="{TemplateBinding Padding}"
+                                         AcceptsReturn="False"/>
+                            </Grid>
+
+                            <Border Grid.Column="1" 
+                                    BorderThickness="1 0 0 0"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                <Button Style="{TemplateBinding ButtonStyle}"
+                                        Command="{TemplateBinding SearchCommand}">
+                                    <Button.Content>
+                                        <Grid Margin="2">
+                                            <Viewbox>
+                                                <Image Width="7"
+                                                       Height="7">
+                                                    <Image.Source>
+                                                        <DrawingImage>
+                                                            <DrawingImage.Drawing>
+                                                                <DrawingGroup ClipGeometry="M0,0 V512.005 H512.005 V0 H0 Z">
+                                                                    <DrawingGroup Opacity="1">
+                                                                        <DrawingGroup Opacity="1">
+                                                                            <GeometryDrawing Brush="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Foreground}"
+                                                                                             Geometry="F1 M512.005,512.005z M0,0z M505.749,475.587L360.149,329.987C388.352,295.15 405.333,250.883 405.333,202.67 405.333,90.926 314.41,0.00299999999995748 202.666,0.00299999999995748 90.922,0.00299999999995748 0,90.925 0,202.669 0,314.413 90.923,405.336 202.667,405.336 250.88,405.336 295.147,388.355 329.984,360.152L475.584,505.752C479.744,509.912 485.205,512.003 490.667,512.003 496.129,512.003 501.59,509.912 505.75,505.752 514.091,497.411 514.091,483.928 505.749,475.587z M202.667,362.669C114.432,362.669 42.667,290.904 42.667,202.669 42.667,114.434 114.432,42.669 202.667,42.669 290.902,42.669 362.667,114.434 362.667,202.669 362.667,290.904 290.901,362.669 202.667,362.669z" />
+                                                                        </DrawingGroup>
+                                                                    </DrawingGroup>
+                                                                </DrawingGroup>
+                                                            </DrawingImage.Drawing>
+                                                        </DrawingImage>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Viewbox>
+                                        </Grid>
+                                    </Button.Content>
+                                </Button>
+                            </Border>
+                            
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type vlv:VlvImage}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type vlv:VlvImage}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Image x:Name="PART_Image">
+                                
+                            </Image>
+
+                            <MediaElement x:Name="PART_MediaElement">
+                            
+                            </MediaElement>
+                        </Grid>
+                        
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

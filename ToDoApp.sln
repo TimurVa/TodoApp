@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32106.194
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToDoApp", "ToDoApp\ToDoApp.csproj", "{F18A255F-430D-4755-8C93-592643CFEF95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VlvCustomControlsDotNet", "..\Nextensor\VlvCustomControlsDotNet\VlvCustomControlsDotNet.csproj", "{6D9D8CBB-3B73-432D-AA77-534C3D6D638E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VlvCustomControlsDotNet", "VlvCustomControlsDotNet\VlvCustomControlsDotNet.csproj", "{6D9D8CBB-3B73-432D-AA77-534C3D6D638E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
