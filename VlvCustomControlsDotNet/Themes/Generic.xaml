@@ -485,6 +485,7 @@
                                     </TextBlock.Style>
                                 </TextBlock>
 
+                                <!-- Binding attached on apply template -->
                                 <TextBox x:Name="PART_Textbox"
                                          Background="Transparent"
                                          BorderThickness="0"
@@ -550,6 +551,36 @@
                             </MediaElement>
                         </Grid>
                         
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type vlv:TextBoxWithSearch}">
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type vlv:TextBoxWithSearch}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <AdornerDecorator>
+                                <TextBox x:Name="PART_TextBox"
+                                         AcceptsReturn="True"
+                                         TextWrapping="Wrap"
+                                         BorderThickness="0"
+                                         Background="{TemplateBinding Background}"
+                                         FontSize="{TemplateBinding FontSize}"
+                                         FontWeight="{TemplateBinding FontWeight}"
+                                         FontFamily="{TemplateBinding FontFamily}"
+                                         Foreground="{TemplateBinding Foreground}"
+                                         Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type vlv:TextBoxWithSearch}}, Path=Text}"/>
+                            </AdornerDecorator>
+                        </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

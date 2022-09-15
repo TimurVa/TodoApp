@@ -153,7 +153,5 @@ namespace ToDoApp.Helpers
         //    lb.Unloaded -= OnFrameworkElementUnloaded;
         //    lb.ScrollViewer.ScrollChanged -= OnScrollViewerScrollChanged;
         //}
-
-
     }
 }

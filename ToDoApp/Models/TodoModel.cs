@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace ToDoApp.Models
 {
@@ -61,7 +62,7 @@ namespace ToDoApp.Models
                 {
                     return;
                 }
-
+                Debug.WriteLine("desc changed");
                 _description = value;
                 OnPropertyChanged();
 
@@ -73,7 +74,7 @@ namespace ToDoApp.Models
                 }
                 else
                 {
-                    CuttedDescription = _description.Substring(0, 59).Replace("\r\n", " ") + "...";
+                    CuttedDescription = _description[..59].Replace("\r\n", " ") + "...";
                 }
             }
         }
