@@ -8,8 +8,6 @@ namespace ToDoApp.Helpers.Attached
 {
     class TextBoxAttachedProperties
     {
-
-
         public static bool GetBindingOnKeyUp(DependencyObject obj)
         {
             return (bool)obj.GetValue(BindingOnKeyUpProperty);

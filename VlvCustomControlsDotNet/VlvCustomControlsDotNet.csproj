@@ -70,6 +70,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Adorners\TextAdorner.cs" />
     <Compile Include="Classes\Converters\AdditionalConverter.cs" />
     <Compile Include="Classes\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Classes\Converters\ColorToBrushConverter.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Classes\ProgressBar\VlvProgressBar.cs" />
     <Compile Include="Classes\EditableTB\EditableTextBlock.cs" />
     <Compile Include="Classes\SearchTextBox.cs" />
+    <Compile Include="Classes\TextBoxWithSearch.cs" />
     <Compile Include="Classes\ViewModels\BaseViewModel.cs" />
     <Compile Include="Classes\VlvImage.cs" />
     <Compile Include="CustomUserControls\Button\ButtonWithImageSourceControl.cs" />

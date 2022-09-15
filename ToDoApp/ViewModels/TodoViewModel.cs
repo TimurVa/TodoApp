@@ -8,6 +8,7 @@ using System.Windows.Input;
 using ToDoApp.Database;
 using ToDoApp.Helpers;
 using ToDoApp.Models;
+using static VlvCustomControlsDotNet.TextBoxWithSearch;
 
 namespace ToDoApp.ViewModels
 {
@@ -54,7 +55,7 @@ namespace ToDoApp.ViewModels
         {
             get => _searchText;
             set
-           {
+            {
                 if (_searchText == value)
                     return;
 
@@ -65,6 +66,22 @@ namespace ToDoApp.ViewModels
                     SearchCommand.Execute(null);
             }
         }
+
+        private Pattern[] _patterns;
+        public Pattern[] Patterns
+        {
+            get => _patterns;
+            set
+            {
+                if (_patterns == value)
+                {
+                    return;
+                }
+
+                _patterns = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
 
@@ -72,6 +89,8 @@ namespace ToDoApp.ViewModels
         public TodoViewModel()
         {
             TodoModels.CollectionChanged += _todoModels_CollectionChanged;
+
+            _patterns = new Pattern[] { Pattern.Parentheses, Pattern.Braces, Pattern.SquareBraces };
 
             Task.Run(async () =>
             {
@@ -230,12 +249,6 @@ namespace ToDoApp.ViewModels
             }
         }
 
-        private async Task<bool> Get()
-        {
-            await Task.Delay(5000);
-            return true;
-        }
-
         private async Task UpdateTodoItem(int property, TodoModel todo, CancellationToken token = default)
         {
             await _todoRepo.UpdateAsync(property, todo);
@@ -278,6 +291,7 @@ namespace ToDoApp.ViewModels
 
         private void SearchCommand_Executed(object p)
         {
+            return;
             if (string.IsNullOrEmpty(_lastSearchMessage) && 
                 string.IsNullOrEmpty(_searchText) || 
                 string.Equals(_lastSearchMessage, _searchText))
@@ -413,11 +427,6 @@ namespace ToDoApp.ViewModels
         {
             try
             {
-                if (_searchText != string.Empty || _lastFilterByIsDone != null)
-                {
-                    return;
-                }
-
                 int count = TodoModels.Count;
                 await foreach (var item in LoadMore().ConfigureAwait(false))
                 {

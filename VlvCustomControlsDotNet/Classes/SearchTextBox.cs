@@ -29,7 +29,6 @@ namespace VlvCustomControlsDotNet
         {
 
         }
-
         #endregion
 
 
@@ -59,6 +58,7 @@ namespace VlvCustomControlsDotNet
         #endregion
 
 
+        #region Placeholder text DP
         public string Placeholder
         {
             get { return (string)GetValue(PlaceholderProperty); }
@@ -68,8 +68,10 @@ namespace VlvCustomControlsDotNet
         // Using a DependencyProperty as the backing store for Placeholder.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PlaceholderProperty =
             DependencyProperty.Register("Placeholder", typeof(string), typeof(SearchTextBox), new PropertyMetadata(string.Empty));
+        #endregion
 
 
+        #region Corner radius DP
         public CornerRadius CornerRadius
         {
             get { return (CornerRadius)GetValue(CornerRadiusProperty); }
@@ -79,7 +81,7 @@ namespace VlvCustomControlsDotNet
         // Using a DependencyProperty as the backing store for CornerRadius.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(SearchTextBox), new PropertyMetadata(default(CornerRadius)));
-
+        #endregion
 
 
         static SearchTextBox()

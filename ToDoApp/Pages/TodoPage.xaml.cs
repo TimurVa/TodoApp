@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Text;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Documents;
 using ToDoApp.Helpers.Adorners;
 
@@ -17,243 +14,225 @@ namespace ToDoApp.Pages
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(tb);
+        //private void tb2_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(tb);
 
-            if (adornerLayer != null)
-            {
-                var toRemove = adornerLayer.GetAdorners(tb);
-                if (toRemove != null)
-                {
-                    for (int i = 0; i < toRemove.Length; i++)
-                    {
-                        adornerLayer.Remove(toRemove[i]);
-                    }
-                }
+        //    if (adornerLayer != null)
+        //    {
+        //        RemoveAdorner(false, adornerLayer);
 
-                TextAdorner textAdorner = new TextAdorner(tb, "low");
-                if (textAdorner != null)
-                {
-                    adornerLayer.Add(textAdorner);
-                }
-            }
-        }
+        //        TextAdorner textAdorner = new TextAdorner(tb, tb2.Text);
+        //        if (textAdorner != null)
+        //        {
+        //            adornerLayer.Add(textAdorner);
+        //        }
+        //    }
+        //}
 
-        private void tb2_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(tb);
+        //private void tb_SelectionChanged(object sender, System.Windows.RoutedEventArgs e)
+        //{
+        //    RemoveAdorner(true, AdornerLayer.GetAdornerLayer(tb));
 
-            if (adornerLayer != null)
-            {
-                RemoveAdorner(false, adornerLayer);
+        //    if (string.IsNullOrEmpty(tb.Text))
+        //    {
+        //        return;
+        //    }
 
-                TextAdorner textAdorner = new TextAdorner(tb, tb2.Text);
-                if (textAdorner != null)
-                {
-                    adornerLayer.Add(textAdorner);
-                }
-            }
-        }
+        //    var result = GetParenthesses(tb.Text, tb.CaretIndex);
 
-        private void tb_SelectionChanged(object sender, System.Windows.RoutedEventArgs e)
-        {
-            RemoveAdorner(true, AdornerLayer.GetAdornerLayer(tb));
+        //    if (result == (-1, -1))
+        //    {
+        //        return;
+        //    }
 
-            if (string.IsNullOrEmpty(tb.Text))
-            {
-                return;
-            }
+        //    CreateAdorner(result.first, result.second);
 
-            var result = GetParenthesses(tb.Text, tb.CaretIndex);
+        //    //if (tb.Text.Length - 1 < tb.CaretIndex)
+        //    //{
+        //    //    if (tb.Text[tb.Text.Length - 1] == ')')
+        //    //    {
+        //    //        var result = GetPrevOpenParentheses(tb.CaretIndex - 2, tb.Text);
 
-            if (result == (-1, -1))
-            {
-                return;
-            }
+        //    //        if (result != -1)
+        //    //        {
+        //    //            CreateAdorner(tb.Text.Length - 1, result);
+        //    //        }
+        //    //    }
+        //    //    return;
+        //    //}
 
-            CreateAdorner(result.first, result.second);
+        //    //if (tb.Text[tb.CaretIndex] == '(')
+        //    //{
+        //    //    var result = GetNextCloseParentheses(tb.CaretIndex + 1, tb.Text);
 
-            //if (tb.Text.Length - 1 < tb.CaretIndex)
-            //{
-            //    if (tb.Text[tb.Text.Length - 1] == ')')
-            //    {
-            //        var result = GetPrevOpenParentheses(tb.CaretIndex - 2, tb.Text);
+        //    //    if (result != -1)
+        //    //    {
+        //    //        CreateAdorner(tb.CaretIndex, result);
+        //    //    }
+        //    //}
+        //    //else if (tb.CaretIndex - 1 >= 0 && tb.Text[tb.CaretIndex - 1] == ')')
+        //    //{
+        //    //    var result = GetPrevOpenParentheses(tb.CaretIndex - 2, tb.Text);
 
-            //        if (result != -1)
-            //        {
-            //            CreateAdorner(tb.Text.Length - 1, result);
-            //        }
-            //    }
-            //    return;
-            //}
+        //    //    if (result != -1)
+        //    //    {
+        //    //        CreateAdorner(tb.CaretIndex - 1, result);
+        //    //    }
+        //    //}
+        //}
 
-            //if (tb.Text[tb.CaretIndex] == '(')
-            //{
-            //    var result = GetNextCloseParentheses(tb.CaretIndex + 1, tb.Text);
+        //private (int first, int second) GetParenthesses(string text, int startIndex)
+        //{
+        //    if (string.IsNullOrEmpty(text))
+        //    {
+        //        return (-1, -1);
+        //    }
 
-            //    if (result != -1)
-            //    {
-            //        CreateAdorner(tb.CaretIndex, result);
-            //    }
-            //}
-            //else if (tb.CaretIndex - 1 >= 0 && tb.Text[tb.CaretIndex - 1] == ')')
-            //{
-            //    var result = GetPrevOpenParentheses(tb.CaretIndex - 2, tb.Text);
+        //    if (startIndex == 0 && text[startIndex] != '(')
+        //    {
+        //        return (-1, -1);
+        //    }
 
-            //    if (result != -1)
-            //    {
-            //        CreateAdorner(tb.CaretIndex - 1, result);
-            //    }
-            //}
-        }
+        //    if (text.Length - 1 < startIndex)
+        //    {
+        //        if (text[text.Length - 1] == ')')
+        //        {
+        //            var result = GetPrevOpenParentheses(startIndex - 2, text);
 
-        private (int first, int second) GetParenthesses(string text, int startIndex)
-        {
-            if (string.IsNullOrEmpty(text))
-            {
-                return (-1, -1);
-            }
+        //            if (result != -1)
+        //            {
+        //                return (text.Length - 1, result);
+        //            }
+        //        }
 
-            if (text.Length - 1 < startIndex)
-            {
-                if (text.Length - 1 == ')')
-                {
-                    var result = GetPrevOpenParentheses(startIndex - 2, text);
+        //        return (-1, -1);
+        //    }
 
-                    if (result != -1)
-                    {
-                        return (text.Length - 1, result);
-                    }
-                }
+        //    if (text[startIndex] == '(')
+        //    {
+        //        var result = GetNextCloseParentheses(startIndex + 1, text);
 
-                return (-1, -1);
-            }
+        //        if (result != -1)
+        //        {
+        //            return (startIndex, result);
+        //        }
 
-            if (text[startIndex] == '(')
-            {
-                var result = GetNextCloseParentheses(startIndex + 1, text);
+        //        return (-1, -1);
+        //    }
 
-                if (result != -1)
-                {
-                    return (startIndex, result);
-                }
+        //    if (text[startIndex - 1] >= 0 && text[startIndex - 1] == ')')
+        //    {
+        //        var result = GetPrevOpenParentheses(startIndex - 2, text);
 
-                return (-1, -1);
-            }
+        //        if (result != -1)
+        //        {
+        //            return (startIndex - 1, result);
+        //        }
+        //    }
 
-            if (text[startIndex - 1] >= 0 && text[startIndex - 1] == ')')
-            {
-                var result = GetPrevOpenParentheses(startIndex - 2, text);
+        //    return (-1, -1);
+        //}
 
-                if (result != -1)
-                {
-                    return (startIndex - 1, result);
-                }
-            }
+        //private int GetNextCloseParentheses(int start, string text)
+        //{
+        //    int countOfOpened = 1;
+        //    for (int i = start; i < text.Length; i++)
+        //    {
+        //        if (text[i] == '(')
+        //        {
+        //            countOfOpened++;
+        //            continue;
+        //        }
 
-            return (-1, -1);
-        }
+        //        if (text[i] == ')')
+        //        {
+        //            countOfOpened--;
 
-        private int GetNextCloseParentheses(int start, string text)
-        {
-            int countOfOpened = 1;
-            for (int i = start; i < text.Length; i++)
-            {
-                if (text[i] == '(')
-                {
-                    countOfOpened++;
-                    continue;
-                }
+        //            if (countOfOpened == 0)
+        //            {
+        //                return i;
+        //            }
+        //        }
+        //    }
 
-                if (text[i] == ')')
-                {
-                    countOfOpened--;
+        //    return -1;
+        //}
 
-                    if (countOfOpened == 0)
-                    {
-                        return i;
-                    }
-                }
-            }
+        //private int GetPrevOpenParentheses(int end, string text)
+        //{
+        //    int countOfClosed = 1;
+        //    for (int i = end; i >= 0; i--)
+        //    {
+        //        if (text[i] == ')')
+        //        {
+        //            countOfClosed++;
+        //            continue;
+        //        }
 
-            return -1;
-        }
+        //        if (text[i] == '(')
+        //        {
+        //            countOfClosed--;
 
-        private int GetPrevOpenParentheses(int end, string text)
-        {
-            int countOfClosed = 1;
-            for (int i = end; i >= 0; i--)
-            {
-                if (text[i] == ')')
-                {
-                    countOfClosed++;
-                    continue;
-                }
+        //            if (countOfClosed == 0)
+        //            {
+        //                return i;
+        //            }
+        //        }
+        //    }
 
-                if (text[i] == '(')
-                {
-                    countOfClosed--;
+        //    return -1;
+        //}
 
-                    if (countOfClosed == 0)
-                    {
-                        return i;
-                    }
-                }
-            }
+        //private void CreateAdorner(int first, int second)
+        //{
+        //    AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(tb);
 
-            return -1;
-        }
+        //    if (adornerLayer != null)
+        //    {
+        //        RemoveAdorner(true, adornerLayer);
 
-        private void CreateAdorner(int first, int second)
-        {
-            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(tb);
+        //        TextAdorner textAdorner = new TextAdorner(tb, first, second);
+        //        if (textAdorner != null)
+        //        {
+        //            adornerLayer.Add(textAdorner);
+        //        }
+        //    }
+        //}
 
-            if (adornerLayer != null)
-            {
-                RemoveAdorner(true, adornerLayer);
+        //private void RemoveAdorner(bool parentheses, AdornerLayer adornerLayer)
+        //{
+        //    if (adornerLayer == null)
+        //    {
+        //        return;
+        //    }
 
-                TextAdorner textAdorner = new TextAdorner(tb, first, second);
-                if (textAdorner != null)
-                {
-                    adornerLayer.Add(textAdorner);
-                }
-            }
-        }
+        //    var toRemove = adornerLayer.GetAdorners(tb);
 
-        private void RemoveAdorner(bool parentheses, AdornerLayer adornerLayer)
-        {
-            if (adornerLayer == null)
-            {
-                return;
-            }
+        //    if (toRemove == null)
+        //    {
+        //        return;
+        //    }
 
-            var toRemove = adornerLayer.GetAdorners(tb);
+        //    for (int i = 0; i < toRemove.Length; i++)
+        //    {
+        //        if (toRemove[i] is not TextAdorner ta)
+        //        {
+        //            continue;
+        //        }
 
-            if (toRemove == null)
-            {
-                return;
-            }
+        //        if (parentheses && ta.IsParenthesesAdorner)
+        //        {
+        //            adornerLayer.Remove(toRemove[i]);
+        //            continue;
+        //        }
 
-            for (int i = 0; i < toRemove.Length; i++)
-            {
-                if (toRemove[i] is not TextAdorner ta)
-                {
-                    continue;
-                }
-
-                if (parentheses && ta.IsParenthesesAdorner)
-                {
-                    adornerLayer.Remove(toRemove[i]);
-                    continue;
-                }
-
-                if (!parentheses && !ta.IsParenthesesAdorner)
-                {
-                    adornerLayer.Remove(toRemove[i]);
-                    continue;
-                }
-            }
-        }
+        //        if (!parentheses && !ta.IsParenthesesAdorner)
+        //        {
+        //            adornerLayer.Remove(toRemove[i]);
+        //            continue;
+        //        }
+        //    }
+        //}
     }
 }
