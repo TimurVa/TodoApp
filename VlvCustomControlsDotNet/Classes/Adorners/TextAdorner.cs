@@ -48,7 +48,7 @@ namespace VlvCustomControlsDotNet.Classes.Adorners
         /// <param name="text"></param>
         /// <param name="ignoreCase"></param>
         /// <exception cref="NullReferenceException"></exception>
-        public TextAdorner(TextBox adornedElement, string text, bool ignoreCase = true) : base(adornedElement)
+        public TextAdorner(TextBox adornedElement, string text, AdornerType adornerType, string color = "#ff9500", bool ignoreCase = true) : base(adornedElement)
         {
             if (adornedElement == null)
             {
@@ -57,7 +57,7 @@ namespace VlvCustomControlsDotNet.Classes.Adorners
 
             visuals = new VisualCollection(this);
 
-            _adornerType = AdornerType.TextSearch;
+            _adornerType = adornerType;
             _pattern = Pattern.Text;
 
             _textBox = adornedElement;
@@ -65,6 +65,23 @@ namespace VlvCustomControlsDotNet.Classes.Adorners
             _textBoxText = ignoreCase ? _textBox.Text.ToLower() : _textBox.Text;
 
             IsHitTestVisible = false;
+
+            try
+            {
+                sb = new SolidColorBrush()
+                {
+                    Color = (Color)ColorConverter.ConvertFromString(color),//("#FF007ACC"),
+                    Opacity = 0.5
+                };
+            }
+            catch (Exception)
+            {
+                sb = new SolidColorBrush()
+                {
+                    Color = (Color)ColorConverter.ConvertFromString("#ff9500"),//("#FF007ACC"),
+                    Opacity = 0.5
+                };
+            }
 
             Task.Run(() =>
             {
@@ -90,6 +107,10 @@ namespace VlvCustomControlsDotNet.Classes.Adorners
 
                     if (indexes.end + _text.Length >= _textBoxText.Length - 1)
                     {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            InvalidateVisual();
+                        });
                         break;
                     }
                 }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using VlvCustomControlsDotNet.Classes.Adorners;
 
 namespace VlvCustomControlsDotNet
@@ -21,15 +23,16 @@ namespace VlvCustomControlsDotNet
         public enum Pattern
         {
             Text,
-            Parentheses,
-            Braces,
-            SquareBraces
+            Parentheses, // ()
+            Braces, // {}
+            SquareBraces // []
         }
 
         public enum AdornerType
         {
             TextSearch,
-            PatternSearch
+            PatternSearch,
+            CaretSearch
         }
         #endregion
 
@@ -64,12 +67,13 @@ namespace VlvCustomControlsDotNet
             if (adornerLayer != null)
             {
                 RemoveAdorner(adornerLayer, AdornerType.TextSearch, Pattern.Text);
+                CreateAdorner(searchText, AdornerType.TextSearch, Pattern.Text);
 
-                TextAdorner textAdorner = new TextAdorner(_textBox, searchText);
-                if (textAdorner != null)
-                {
-                    adornerLayer.Add(textAdorner);
-                }
+                //TextAdorner textAdorner = new TextAdorner(_textBox, searchText, AdornerType.TextSearch);
+                //if (textAdorner != null)
+                //{
+                //    adornerLayer.Add(textAdorner);
+                //}
             }
         }
         #endregion
@@ -118,6 +122,11 @@ namespace VlvCustomControlsDotNet
 
         private void _textBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
+            if (!_textBox.IsFocused)
+            {
+                return;
+            }
+
             if (string.IsNullOrEmpty(_textBox.Text))
             {
                 return;
@@ -138,6 +147,53 @@ namespace VlvCustomControlsDotNet
                     TryCreatePatternAdorner('[', ']', Pattern.SquareBraces);
                 }
             }
+
+            var textUnderCaret = GetTextUnderCaret(_textBox.Text, _textBox.CaretIndex);
+
+            if (textUnderCaret == (-1, -1))
+            {
+                RemoveAdorner(AdornerLayer.GetAdornerLayer(_textBox), AdornerType.CaretSearch, Pattern.Text);
+                return;
+            }
+
+            string result = createString(textUnderCaret);
+
+            if (SearchText == result)
+            {
+                return;
+            }
+
+            Debug.WriteLine(result);
+
+            CreateAdorner(result, AdornerType.CaretSearch, Pattern.Text, "#98a7f2");
+
+            //JustCreateAdorner(textUnderCaret.start, textUnderCaret.end, Pattern.Text);
+
+            //while (textUnderCaret.end != _textBox.Text.Length)
+            //{
+            //    textUnderCaret.end++;
+
+            //    var nextText = GetNextSameWord(_textBox.Text, result, textUnderCaret.end);
+
+            //    if (nextText != (-1, -1))
+            //    {
+            //        createString(nextText);
+            //        JustCreateAdorner(nextText.start, nextText.end, Pattern.Text);
+            //    }
+            //}
+        }
+
+        private string createString((int, int) pos)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = pos.Item1; i < pos.Item2; i++)
+            {
+                sb.Append(_textBox.Text[i]);
+            }
+
+            Debug.WriteLine("creating string " + sb.ToString());
+            return sb.ToString();
         }
 
         private void TryCreatePatternAdorner(char start, char end, Pattern pattern)
@@ -152,6 +208,18 @@ namespace VlvCustomControlsDotNet
 
             CreateAdorner(result.first, result.second, pattern);
         }
+        #endregion
+
+
+        #region Caret brush DP
+        public Brush CaretBrush
+        {
+            get { return (Brush)GetValue(CaretBrushProperty); }
+            set { SetValue(CaretBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty CaretBrushProperty =
+            DependencyProperty.Register("CaretBrush", typeof(Brush), typeof(TextBoxWithSearch), new PropertyMetadata(Brushes.White));
         #endregion
 
 
@@ -205,6 +273,22 @@ namespace VlvCustomControlsDotNet
                 RemoveAdorner(adornerLayer, AdornerType.PatternSearch, pattern);
                 TextAdorner textAdorner = new TextAdorner(_textBox, startIndex, endIndex, pattern);
 
+                if (textAdorner != null)
+                {
+                    adornerLayer.Add(textAdorner);
+                }
+            }
+        }
+
+        private void CreateAdorner(string searchText, AdornerType adornerType, Pattern pattern, string color = "#ff9500")
+        {
+            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(_textBox);
+
+            if (adornerLayer != null)
+            {
+                RemoveAdorner(adornerLayer, adornerType, pattern);
+
+                TextAdorner textAdorner = new TextAdorner(_textBox, searchText, adornerType, color);
                 if (textAdorner != null)
                 {
                     adornerLayer.Add(textAdorner);
@@ -345,6 +429,114 @@ namespace VlvCustomControlsDotNet
 
             return -1;
         }
+
+        private (int start, int end) GetTextUnderCaret(string text, int startIndex)
+        {
+            int len = text.Length - 1;
+
+            if (startIndex < 0 || startIndex > len)
+            {
+                return (-1, -1);
+            }
+
+            int start = startIndex;
+            int end = startIndex;
+
+            if (len >= start + 1)
+            {
+                if (!char.IsLetter(text[start + 1]) || !char.IsLetter(text[start]))
+                {
+                    start--;
+                }
+            }
+
+            for (int i = end; i <= len; i++)
+            {
+                Debug.WriteLine("current index " + text[i]);
+
+                if (!char.IsLetter(text[i]))
+                {
+                    Debug.WriteLine($"break going right -> char {text[i]} is not letter");
+                    break;
+                }
+
+                end++;
+            }
+
+            Debug.WriteLine(Environment.NewLine);
+
+            for (int i = start; i >= 0; i--)
+            {
+                Debug.WriteLine("current index " + text[i]);
+
+                if (!char.IsLetter(text[i]))
+                {
+                    Debug.WriteLine($"break going left -> char {text[i]} is not letter");
+
+                    if (start == startIndex && end == startIndex)
+                    {
+                        break;
+                    }
+
+                    start++;
+                    break;
+                }
+
+                if (start != 0)
+                {
+                    start--;
+                }
+            }
+
+            if (start == startIndex && end == startIndex || start < 0 || end < 0)
+            {
+                return (-1, -1);
+            }
+
+            if (start > end)
+            {
+                int temp = end;
+                end = start;
+                start = temp;
+            }
+
+            return (start, end);
+        }
+
+        //private (int start, int end) GetNextSameWord(string text, string word, int startIndex)
+        //{
+        //    int end = startIndex;
+
+        //    int j = 0;
+        //    StringBuilder sb = new StringBuilder();
+        //    for (int i = startIndex; i < text.Length; i++)
+        //    {
+        //        if (text[i] == word[j])
+        //        {
+        //            sb.Append(text[i]);
+
+        //            if (i + 1 > text.Length && char.IsLetter(text[i + 1]) && j + 1 == word.Length)
+        //            {
+        //                Debug.WriteLine("breaking! " + sb.ToString());
+        //                return (-1, -1);
+        //            }
+
+        //            if (j + 1 == word.Length)
+        //            {
+        //                return (end - word.Length, end + 1);
+        //            }
+
+        //            j++;
+        //            end++;
+        //        }
+        //        else
+        //        {
+        //            return (-1, -1);
+        //        }
+        //    }
+
+        //    return (-1, -1);
+        //}
         #endregion
     }
 }

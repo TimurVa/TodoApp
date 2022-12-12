@@ -562,6 +562,7 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="CaretBrush" Value="White"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type vlv:TextBoxWithSearch}">
@@ -578,7 +579,8 @@
                                          FontWeight="{TemplateBinding FontWeight}"
                                          FontFamily="{TemplateBinding FontFamily}"
                                          Foreground="{TemplateBinding Foreground}"
-                                         Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type vlv:TextBoxWithSearch}}, Path=Text}"/>
+                                         Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type vlv:TextBoxWithSearch}}, Path=Text}"
+                                         CaretBrush="{TemplateBinding CaretBrush}"/>
                             </AdornerDecorator>
                         </Grid>
                     </Border>

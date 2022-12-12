@@ -462,7 +462,7 @@ namespace ToDoApp.ViewModels
 
             try
             {
-                using SqliteConnection sqliteConnection = new SqliteConnection(Static.DatabasePath);
+                using SqliteConnection sqliteConnection = new(Static.DatabasePath);
                 await sqliteConnection.OpenAsync().ConfigureAwait(false);
 
                 using SqliteCommand getItemsCommand = sqliteConnection.CreateCommand();
@@ -474,7 +474,7 @@ namespace ToDoApp.ViewModels
                 {
                     while (await reader.ReadAsync().ConfigureAwait(false))
                     {
-                        DateTime time = new DateTime(reader.GetInt64(2));
+                        DateTime time = new(reader.GetInt64(2));
 
                         time = time.Add(DateTimeOffset.Now.Offset);
 
