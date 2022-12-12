@@ -180,7 +180,9 @@
                                         <vlv:TextBoxWithSearch Text="{Binding Description}"
                                                                Foreground="{DynamicResource MainFgColorBrush}"
                                                                SearchText="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Path=DataContext.SearchText}"
-                                                               StartEndPatterns="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Path=DataContext.Patterns}">
+                                                               StartEndPatterns="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Page}, Path=DataContext.Patterns}"
+                                                               CaretBrush="{DynamicResource MainFgColorBrush}"
+                                                               >
                                             <vlv:TextBoxWithSearch.Style>
                                                 <Style TargetType="{x:Type vlv:TextBoxWithSearch}">
                                                     <Style.Triggers>
