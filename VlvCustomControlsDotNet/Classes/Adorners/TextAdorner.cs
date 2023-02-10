@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using static VlvCustomControlsDotNet.TextBoxWithSearch;
@@ -93,6 +92,10 @@ namespace VlvCustomControlsDotNet.Classes.Adorners
 
                     if (indexes.start == -2 || indexes.end == -2)
                     {
+                        if (Occurrences.Count > 0)
+                        {
+                            Application.Current.Dispatcher.Invoke(InvalidateVisual);
+                        }
                         break;
                     }
 
@@ -274,6 +277,8 @@ namespace VlvCustomControlsDotNet.Classes.Adorners
                 }
                 else
                 {
+                    //Debug.Write(_textBoxText[i]);
+                    //Debug.Write(_text[_textIndex]);
                     return -1;
                 }
             }

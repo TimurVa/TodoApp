@@ -16,6 +16,28 @@ namespace VlvCustomControlsDotNet
     {
         #region Private members
         private TextBox _textBox;
+
+        /// <summary>
+        /// Доступные символы при поиске текста помимо букв алфавита
+        /// </summary>
+        private static readonly HashSet<char> _allowedCharacters = new HashSet<char>()
+        {
+            '-',
+            '_',
+            '0',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            '\'',
+            ';'
+
+        };
         #endregion
 
 
@@ -146,6 +168,7 @@ namespace VlvCustomControlsDotNet
                 {
                     TryCreatePatternAdorner('[', ']', Pattern.SquareBraces);
                 }
+                break;
             }
 
             var textUnderCaret = GetTextUnderCaret(_textBox.Text, _textBox.CaretIndex);
@@ -156,7 +179,7 @@ namespace VlvCustomControlsDotNet
                 return;
             }
 
-            string result = createString(textUnderCaret);
+            string result = CreateStringFromPosition(textUnderCaret);
 
             if (SearchText == result)
             {
@@ -183,7 +206,7 @@ namespace VlvCustomControlsDotNet
             //}
         }
 
-        private string createString((int, int) pos)
+        private string CreateStringFromPosition((int, int) pos)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -444,7 +467,7 @@ namespace VlvCustomControlsDotNet
 
             if (len >= start + 1)
             {
-                if (!char.IsLetter(text[start + 1]) || !char.IsLetter(text[start]))
+                if (!char.IsLetter(text[start + 1]) || !char.IsLetter(text[start]) || !_allowedCharacters.Contains(text[start]))
                 {
                     start--;
                 }
@@ -452,26 +475,26 @@ namespace VlvCustomControlsDotNet
 
             for (int i = end; i <= len; i++)
             {
-                Debug.WriteLine("current index " + text[i]);
+                //Debug.WriteLine("current index " + text[i]);
 
-                if (!char.IsLetter(text[i]))
+                if (!char.IsLetter(text[i]) && !_allowedCharacters.Contains(text[i]))
                 {
-                    Debug.WriteLine($"break going right -> char {text[i]} is not letter");
+                    //Debug.WriteLine($"break going right -> char {text[i]} is not letter");
                     break;
                 }
 
                 end++;
             }
 
-            Debug.WriteLine(Environment.NewLine);
+            //Debug.WriteLine(Environment.NewLine);
 
             for (int i = start; i >= 0; i--)
             {
-                Debug.WriteLine("current index " + text[i]);
+                //Debug.WriteLine("current index " + text[i]);
 
-                if (!char.IsLetter(text[i]))
+                if (!char.IsLetter(text[i]) && !_allowedCharacters.Contains(text[i]))
                 {
-                    Debug.WriteLine($"break going left -> char {text[i]} is not letter");
+                    //Debug.WriteLine($"break going left -> char {text[i]} is not letter");
 
                     if (start == startIndex && end == startIndex)
                     {
@@ -502,41 +525,6 @@ namespace VlvCustomControlsDotNet
 
             return (start, end);
         }
-
-        //private (int start, int end) GetNextSameWord(string text, string word, int startIndex)
-        //{
-        //    int end = startIndex;
-
-        //    int j = 0;
-        //    StringBuilder sb = new StringBuilder();
-        //    for (int i = startIndex; i < text.Length; i++)
-        //    {
-        //        if (text[i] == word[j])
-        //        {
-        //            sb.Append(text[i]);
-
-        //            if (i + 1 > text.Length && char.IsLetter(text[i + 1]) && j + 1 == word.Length)
-        //            {
-        //                Debug.WriteLine("breaking! " + sb.ToString());
-        //                return (-1, -1);
-        //            }
-
-        //            if (j + 1 == word.Length)
-        //            {
-        //                return (end - word.Length, end + 1);
-        //            }
-
-        //            j++;
-        //            end++;
-        //        }
-        //        else
-        //        {
-        //            return (-1, -1);
-        //        }
-        //    }
-
-        //    return (-1, -1);
-        //}
         #endregion
     }
 }
