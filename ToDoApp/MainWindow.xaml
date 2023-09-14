@@ -6,6 +6,7 @@
         xmlns:converters="clr-namespace:ToDoApp.Helpers.Converters"
         xmlns:attached="clr-namespace:ToDoApp.Helpers.Attached"
         xmlns:viewModel="clr-namespace:ToDoApp.ViewModels"
+        xmlns:calendar="clr-namespace:ToDoApp.ViewModels.Calendar"
         xmlns:view="clr-namespace:ToDoApp.Pages"
         xmlns:local="clr-namespace:ToDoApp"
         mc:Ignorable="d"
@@ -38,6 +39,10 @@
             <view:PasswordsPage/>
         </DataTemplate>
 
+        <DataTemplate DataType="{x:Type calendar:CalendarViewModel}">
+            <view:CalendarPage/>
+        </DataTemplate>
+
         <Style TargetType="{x:Type local:MainWindow}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -63,7 +68,9 @@
                                         <Grid Margin="5 0"
                                               HorizontalAlignment="Center"
                                               VerticalAlignment="Center">
-                                            <TextBlock Text="icon"/>
+                                            <!--<TextBlock Text="icon"/>-->
+                                            <Image Source="/Resources/Images/icon.ico"
+                                                   Width="15"/>
                                         </Grid>
                                         
                                         
@@ -80,6 +87,10 @@
                                                 <MenuItem Header="Passwords"
                                                           Command="{Binding ChangePageCommand}"
                                                           CommandParameter="Passwords"/>
+
+                                                <MenuItem Header="Calendar"
+                                                          Command="{Binding ChangePageCommand}"
+                                                          CommandParameter="Calendar"/>
 
                                                 <MenuItem Header="Settings"
                                                           Command="{Binding ShowSettingsCommand}"/>
@@ -117,10 +128,9 @@
                                                 VerticalAlignment="Center"
                                                 WindowChrome.IsHitTestVisibleInChrome="true">
                                         <Button Command="{Binding MinimizeCommand}"
-                                                Style="{StaticResource ButtonForIconPlacementStyle}"
-                                                Padding="0 5 0 5">
+                                                Style="{StaticResource ButtonForIconPlacementStyle}">
                                             <Button.Content>
-                                                <Image Width="8">
+                                                <Image Width="12">
                                                     <Image.Source>
                                                         <DrawingImage>
                                                             <DrawingImage.Drawing>

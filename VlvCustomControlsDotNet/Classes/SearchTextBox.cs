@@ -52,7 +52,6 @@ namespace VlvCustomControlsDotNet
             set { SetValue(SearchCommandProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for SearchCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SearchCommandProperty =
             DependencyProperty.Register("SearchCommand", typeof(ICommand), typeof(SearchTextBox), new PropertyMetadata(default(ICommand)));
         #endregion
@@ -121,7 +120,12 @@ namespace VlvCustomControlsDotNet
                         {
                             binding.UpdateTarget();
                         }
+                        else
+                        {
+                            Text = string.Empty;
+                        }
                     }
+
                 }
 
                 FocusManager.SetFocusedElement(FocusManager.GetFocusScope(_textBox), null);

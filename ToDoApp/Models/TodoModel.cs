@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace ToDoApp.Models
 {
-    public class TodoModel : BaseModel
+    public sealed class TodoModel : BaseModel
     {
         public event EventHandler NameChangedEvent;
         public event EventHandler DescriptionChangedEvent;

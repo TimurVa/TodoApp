@@ -2,7 +2,7 @@
 
 namespace ToDoApp.Models
 {
-    public class PasswordModel : BaseModel
+    public sealed class PasswordModel : BaseModel
     {
         public event EventHandler WhatForChanged;
         public event EventHandler UserNameChanged;
