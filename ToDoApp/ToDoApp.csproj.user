@@ -10,6 +10,15 @@
     <Compile Update="Controls\BindablePasswordBoxControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Controls\Calendar\DaysControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\Calendar\MonthsControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Pages\CalendarPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\PasswordsPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -24,7 +33,16 @@
     <Page Update="Controls\BindablePasswordBoxControl.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Controls\Calendar\DaysControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\Calendar\MonthsControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Pages\CalendarPage.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Pages\PasswordsPage.xaml">

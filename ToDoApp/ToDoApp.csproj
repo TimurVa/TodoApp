@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="icon.ico" />
+    <None Remove="Resources\Images\icon.ico" />
     <None Remove="Resources\Images\icon.png" />
   </ItemGroup>
 
@@ -19,6 +21,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VlvCustomControlsDotNet\VlvCustomControlsDotNet.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icon.ico" />
+    <Resource Include="Resources\Images\icon.ico" />
   </ItemGroup>
 
 </Project>

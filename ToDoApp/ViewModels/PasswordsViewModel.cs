@@ -47,6 +47,7 @@ namespace ToDoApp.ViewModels
             }
         }
 
+        private string _lastSearchString;
         private string _searchString;
         public string SearchString
         {
@@ -58,8 +59,18 @@ namespace ToDoApp.ViewModels
                     return;
                 }
 
+                _lastSearchString = _searchString;
                 _searchString = value;
                 OnPropertyChanged();
+
+                if (string.IsNullOrEmpty(_searchString))
+                {
+                    FilteredPasswordModels = new ObservableCollection<PasswordModel>(_passwordModels);
+                }
+                else
+                {
+                    _ = SearchCommand_Executed(null);
+                }
             }
         }
         #endregion
@@ -135,7 +146,7 @@ namespace ToDoApp.ViewModels
         public ICommand AddCommand => _addCommand ??= new RelayCommand(async (p) => await AddCommand_Executed(p));
         public ICommand RemoveCommand => _removeCommand ??= new RelayCommand(async (p) => await RemoveCommand_Executed(p));
         public ICommand CopyCommand => _copyCommand ??= new RelayCommand(CopyCommand_Executed);
-        public ICommand SearchCommand => _searchCommand ??= new RelayCommand(SearchCommand_Executed);
+        public ICommand SearchCommand => _searchCommand ??= new RelayCommand(async (p) => await SearchCommand_Executed(p));
         public ICommand OpenLinkCommand => _openLinkCommand ??= new RelayCommand(OpenLinkCommand_Executed);
 
         /// <summary>
@@ -186,9 +197,39 @@ namespace ToDoApp.ViewModels
         #endregion
 
         #region Search not used
-        private void SearchCommand_Executed(object obj)
+        private async Task SearchCommand_Executed(object obj)
         {
-            throw new NotImplementedException();
+            if (PasswordModels.Count == 0) return;
+
+            if (_lastSearchString == _searchString) return;
+
+            FilteredPasswordModels = new();
+
+            await Task.Run(() =>
+            {
+                string searchString = _searchString;
+
+                foreach (var item in _passwordModels)
+                {
+                    if (item.UserName.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            FilteredPasswordModels.Add(item);
+                        });
+                        continue;
+                    }
+
+                    if (item.WhatFor.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            FilteredPasswordModels.Add(item);
+                        });
+                        continue;
+                    }
+                }
+            });
         }
         #endregion
 

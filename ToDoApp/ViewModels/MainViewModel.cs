@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using ToDoApp.Helpers;
 using ToDoApp.Interfaces;
+using ToDoApp.ViewModels.Calendar;
 
 namespace ToDoApp.ViewModels
 {
@@ -15,6 +16,7 @@ namespace ToDoApp.ViewModels
         private bool _isDisposed = false;
         private readonly TodoViewModel _todoViewModel;
         private readonly PasswordsViewModel _passwordsViewModel;
+        private readonly CalendarViewModel _calendarViewModel;
 
         private bool _isTopMost = true;
         public bool IsTopMost
@@ -61,8 +63,9 @@ namespace ToDoApp.ViewModels
             _settings = settings;
             _todoViewModel = new TodoViewModel();
             _passwordsViewModel = new PasswordsViewModel();
+            _calendarViewModel = new();
 
-            SelectedViewModel = _todoViewModel;
+            SelectedViewModel = _calendarViewModel;
         }
         #endregion
 
@@ -124,6 +127,11 @@ namespace ToDoApp.ViewModels
                 case "Passwords":
                     {
                         SelectedViewModel = _passwordsViewModel;
+                        break;
+                    }
+                case "Calendar":
+                    {
+                        SelectedViewModel = _calendarViewModel;
                         break;
                     }
             }
