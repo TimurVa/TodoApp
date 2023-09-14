@@ -29,7 +29,6 @@ namespace ToDoApp.ViewModels.Calendar
             }
         }
 
-
         public MonthViewModel()
         {
             
