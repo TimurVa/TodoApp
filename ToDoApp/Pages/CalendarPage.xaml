@@ -17,6 +17,10 @@
         <DataTemplate DataType="{x:Type vms:MonthViewModel}">
             <controls:MonthsControl/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type vms:YearViewModel}">
+            <controls:YearsControl/>
+        </DataTemplate>
     </Page.Resources>
 
     <ContentControl Content="{Binding SelectedViewModel}"/>

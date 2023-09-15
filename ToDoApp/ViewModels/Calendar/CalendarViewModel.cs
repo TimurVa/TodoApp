@@ -6,6 +6,7 @@ namespace ToDoApp.ViewModels.Calendar
     {
         private readonly DaysViewModel _days;
         private readonly MonthViewModel _months;
+        private readonly YearViewModel _years;
         //public DaysViewModel Days
         //{
         //    get => _days;
@@ -42,6 +43,22 @@ namespace ToDoApp.ViewModels.Calendar
 
             _months = new MonthViewModel();
             _months.SelectedMonthChanged += Months_SelectedMonthChanged;
+            _months.YearViewTriggered += Months_YearViewTriggered;
+
+            _years = new YearViewModel();
+            _years.SelectedYearChanged += Years_SelectedYearChanged;
+        }
+
+        private void Years_SelectedYearChanged(object sender, Helpers.CustomEventArgs.MontAndYearEventArgs e)
+        {
+            _months.ShowYear(e.Year);
+            SelectedViewModel = _months;
+        }
+
+        private void Months_YearViewTriggered(object sender, Helpers.CustomEventArgs.MontAndYearEventArgs e)
+        {
+            _years.ShowYears(e.Year);
+            SelectedViewModel = _years;
         }
 
         private void Months_SelectedMonthChanged(object sender, Helpers.CustomEventArgs.MontAndYearEventArgs e)
@@ -52,7 +69,7 @@ namespace ToDoApp.ViewModels.Calendar
 
         private void Days_MontViewTriggered(object sender, Helpers.CustomEventArgs.MontAndYearEventArgs e)
         {
-            _months.ShowYear(e.Year, e.Month);
+            _months.ShowYear(e.Year);
             SelectedViewModel = _months;
         }
     }
