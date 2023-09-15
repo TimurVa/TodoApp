@@ -171,10 +171,11 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Background="Transparent">
-                            <StackPanel>
-                                <TextBlock Text="{Binding Date, StringFormat='dd MM yyyy'}"/>
-                                <TextBlock Text="{Binding WeekNumber}"
-                                            Margin="20 0 0 0"/>
+                            <StackPanel HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="{Binding Date, StringFormat='dd'}"/>
+                                <!--<TextBlock Text="{Binding WeekNumber}"
+                                            Margin="20 0 0 0"/>-->
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
