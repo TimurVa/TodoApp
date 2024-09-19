@@ -7,7 +7,8 @@
       d:DesignHeight="450" d:DesignWidth="800"
       xmlns:controls="clr-namespace:ToDoApp.Controls.Calendar"
       xmlns:vms="clr-namespace:ToDoApp.ViewModels.Calendar"
-      Title="CalendarPage">
+      xmlns:view="clr-namespace:ToDoApp.Controls"
+      Title="CalendarPage" Focusable="True">
 
     <Page.Resources>
         <DataTemplate DataType="{x:Type vms:DaysViewModel}">
@@ -23,6 +24,118 @@
         </DataTemplate>
     </Page.Resources>
 
-    <ContentControl Content="{Binding SelectedViewModel}"/>
+    <StackPanel>
+        <TextBox Text="{Binding Ticks}"/>
+
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <StackPanel Margin="5 0">
+                <TextBlock Text="Угол слева"/>
+                <TextBox Text="{Binding LeftAngle}" Width="100"/>
+            </StackPanel>
+
+            <StackPanel Margin="5 0">
+                <TextBlock Text="Угол справа"/>
+                <TextBox Text="{Binding RightAngle}" Width="100"/>
+            </StackPanel>
+
+            <StackPanel Margin="5 0" VerticalAlignment="Center" Width="120">
+                <TextBlock>
+                    <Run Text="Последний угол:"/>
+
+                    <Run Text="{Binding LastAngle}"/>
+                </TextBlock>
+            </StackPanel>
+
+            <Button Command="{Binding CreateSectorCommand}"
+                    Content="Сектор"/>
+            <Button Command="{Binding CreateArrowCommand}" 
+                    Content="Стрелка"/>
+            <Button Command="{Binding ClearSectorCommand}"
+                    Content="Очистить"/>
+        </StackPanel>
+            
+        <view:DirectionControl Width="300"
+                                Height="300"
+                                FontSize="10"
+                                Foreground="Black"
+                                MajorTicksCount="{Binding Ticks}"
+                                Sectors="{Binding Sectors}"
+                                LabelPadding="-10"
+                                Arrows="{Binding Arrows}"></view:DirectionControl>
+
+        
+        <view:RotaryControl Grid.Row="1" Grid.Column="5"
+                            FontBrush="White" FontSize="10"
+                            Foreground="Black" Background="Transparent" >
+            <view:RotaryControl.PointerFill>
+                <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+                    <GradientStop Color="#DDDDDD" Offset="0"/>
+                    <GradientStop Color="#AAAAAA" Offset="1.0"/>
+                </LinearGradientBrush>
+            </view:RotaryControl.PointerFill>
+
+            <view:RotaryControl.OuterDialFill>
+                <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="Gray" Offset="0.5"/>
+                    <GradientStop Color="Black" Offset="1.0"/>
+                </LinearGradientBrush>
+            </view:RotaryControl.OuterDialFill>
+            <view:RotaryControl.OuterDialBorder>
+                <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+                    <GradientStop Color="Gray" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.5"/>
+                    <GradientStop Color="Gray" Offset="1.0"/>
+                </LinearGradientBrush>
+            </view:RotaryControl.OuterDialBorder>
+            <view:RotaryControl.OuterDialBorderThickness>3</view:RotaryControl.OuterDialBorderThickness>
+
+            <view:RotaryControl.InnerDialRadius>0</view:RotaryControl.InnerDialRadius>
+            <view:RotaryControl.InnerDialFill>
+                <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.5"/>
+                    <GradientStop Color="White" Offset="1.0"/>
+                </LinearGradientBrush>
+            </view:RotaryControl.InnerDialFill>
+
+            <view:RotaryControl.LabelDialRadius>48</view:RotaryControl.LabelDialRadius>
+
+            <view:RotaryControl.MajorTickDialRadius>65.5</view:RotaryControl.MajorTickDialRadius>
+            <view:RotaryControl.MajorTickLength>6</view:RotaryControl.MajorTickLength>
+            <view:RotaryControl.NumberOfMajorTicks>4</view:RotaryControl.NumberOfMajorTicks>
+            <view:RotaryControl.MajorTickIncrement>90</view:RotaryControl.MajorTickIncrement>
+            <view:RotaryControl.MajorTickBrush>White</view:RotaryControl.MajorTickBrush>
+            <view:RotaryControl.NumberOfMinorTicks>4</view:RotaryControl.NumberOfMinorTicks>
+            <view:RotaryControl.MinorTickBrush>White</view:RotaryControl.MinorTickBrush>
+
+            <view:RotaryControl.StartAngleInDegrees>0</view:RotaryControl.StartAngleInDegrees>
+            <view:RotaryControl.EndAngleInDegrees>270</view:RotaryControl.EndAngleInDegrees>
+
+            <view:RotaryControl.PointerAxleFill>
+                <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+                    <GradientStop Color="Gray" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.5"/>
+                    <GradientStop Color="Gray" Offset="1.0"/>
+                </LinearGradientBrush>
+            </view:RotaryControl.PointerAxleFill>
+            <view:RotaryControl.PointerLength>45</view:RotaryControl.PointerLength>
+            <view:RotaryControl.PointerWidth>2</view:RotaryControl.PointerWidth>
+            <view:RotaryControl.PointerType>standard</view:RotaryControl.PointerType>
+
+            <view:RotaryControl.SegmentThickness>5</view:RotaryControl.SegmentThickness>
+            <view:RotaryControl.SegmentRadius>35</view:RotaryControl.SegmentRadius>
+            <view:RotaryControl.Segments>
+                <x:Array Type="{x:Type view:RotaryControlSegment}" >
+                    <view:RotaryControlSegment Fill="YellowGreen" AngleInDegrees="210"/>
+                    <view:RotaryControlSegment Fill="Gold" AngleInDegrees="30"/>
+                    <view:RotaryControlSegment Fill="Orange" AngleInDegrees="30"/>
+                    <view:RotaryControlSegment Fill="Crimson" AngleInDegrees="30"/>
+                </x:Array>
+            </view:RotaryControl.Segments>
+        </view:RotaryControl>
+
+        <ContentControl Content="{Binding SelectedViewModel}"/>
+    </StackPanel>
 
 </Page>

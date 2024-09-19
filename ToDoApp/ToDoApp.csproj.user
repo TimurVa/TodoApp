@@ -19,6 +19,12 @@
     <Compile Update="Controls\Calendar\YearsControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Controls\DirectionControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Controls\RotaryControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Pages\CalendarPage.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -43,6 +49,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Controls\Calendar\YearsControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\DirectionControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Controls\RotaryControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MainWindow.xaml">
