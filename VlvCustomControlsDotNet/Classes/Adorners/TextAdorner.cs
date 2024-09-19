@@ -94,7 +94,7 @@ namespace VlvCustomControlsDotNet.Classes.Adorners
                     {
                         if (Occurrences.Count > 0)
                         {
-                            Application.Current.Dispatcher.Invoke(InvalidateVisual);
+                            Application.Current.Dispatcher.Invoke(InvalidateVisual, System.Windows.Threading.DispatcherPriority.Background);
                         }
                         break;
                     }
@@ -113,7 +113,7 @@ namespace VlvCustomControlsDotNet.Classes.Adorners
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             InvalidateVisual();
-                        });
+                        }, System.Windows.Threading.DispatcherPriority.Background);
                         break;
                     }
                 }

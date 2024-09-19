@@ -90,12 +90,9 @@ namespace ToDoApp.ViewModels
         {
             TodoModels.CollectionChanged += _todoModels_CollectionChanged;
 
-            _patterns = new Pattern[] { Pattern.Parentheses, Pattern.Braces, Pattern.SquareBraces };
+            _patterns = [Pattern.Parentheses, Pattern.Braces, Pattern.SquareBraces];
 
-            Task.Run(async () =>
-            {
-                await LoadItems();
-            });
+            Task.Run(LoadItems);
         }
 
         private void _todoModels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

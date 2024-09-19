@@ -74,6 +74,8 @@ namespace ToDoApp.ViewModels.Calendar
 
             bool parseResult = int.TryParse(str, out var year);
 
+            if (!parseResult) return;
+
             ShowYears(_currentYear + year);
         }
         #endregion
