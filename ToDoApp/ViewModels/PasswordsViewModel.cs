@@ -211,23 +211,23 @@ namespace ToDoApp.ViewModels
 
                 foreach (var item in _passwordModels)
                 {
-                    if (item.UserName.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))
+                    if (item.UserName.Contains(searchString, StringComparison.InvariantCultureIgnoreCase) || item.WhatFor.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))
                     {
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             FilteredPasswordModels.Add(item);
-                        });
+                        }, System.Windows.Threading.DispatcherPriority.Background);
                         continue;
                     }
 
-                    if (item.WhatFor.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            FilteredPasswordModels.Add(item);
-                        });
-                        continue;
-                    }
+                    //if (item.WhatFor.Contains(searchString, StringComparison.InvariantCultureIgnoreCase))
+                    //{
+                    //    Application.Current.Dispatcher.Invoke(() =>
+                    //    {
+                    //        FilteredPasswordModels.Add(item);
+                    //    }, System.Windows.Threading.DispatcherPriority.Background);
+                    //    continue;
+                    //}
                 }
             });
         }
