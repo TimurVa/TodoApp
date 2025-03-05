@@ -4,6 +4,7 @@ using ToDoApp.Helpers;
 using System.Windows.Input;
 using ToDoApp.Helpers.CustomEventArgs;
 using ToDoApp.Models.CalendarModels;
+using System.Diagnostics;
 
 namespace ToDoApp.ViewModels.Calendar
 {
@@ -111,6 +112,7 @@ namespace ToDoApp.ViewModels.Calendar
 
         public void ShowMonth(int month, int year)
         {
+            Debug.WriteLine($"{month}-{year}");
             if (month == _month &&  year == _year) return;
 
             if (month > 12)
@@ -129,13 +131,14 @@ namespace ToDoApp.ViewModels.Calendar
             DateTime startDate = new(year, month, 1);
             DateTime startDate2 = new(year, month, 1);
             DateTime endDate = startDate.AddMonths(1).AddDays(-1);
-            DateTime endDate2 = startDate.AddMonths(1).AddDays(-1);
+            DateTime endDate2 = startDate.AddMonths(1);//.AddDays(-1);
             Month = startDate.ToString("MMMM");
             Year = startDate2.ToString("yyyy");
             _month = startDate.Month;
             _year = startDate2.Year;
             int lastWeekNumber = 0;
 
+            DayModel? lastDay = null;
             while (startDate <= endDate)
             {
                 var dayOfWeek = startDate.DayOfWeek;
@@ -147,9 +150,11 @@ namespace ToDoApp.ViewModels.Calendar
                     WeekNumber = lastWeekNumber,
                     WeekDay = dayOfWeek == DayOfWeek.Sunday ? 6 : (int)dayOfWeek - 1
                 });
-
+                lastDay = DayModels[^1];
                 if (startDate == DateTime.MinValue) return;
                 startDate = startDate.AddDays(1);
+
+                //Debug.WriteLine(lastWeekNumber + " " + DayModels[DayModels.Count - 1].Date.ToShortDateString());
             }
 
             if (startDate2.DayOfWeek == DayOfWeek.Monday)
@@ -178,6 +183,10 @@ namespace ToDoApp.ViewModels.Calendar
             }
 
             endDate:
+            if (lastDay.WeekDay == 6)
+            {
+                lastWeekNumber++;
+            }
             while (true)
             {
                 var dayOfWeek = endDate2.DayOfWeek;

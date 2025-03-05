@@ -9,6 +9,7 @@ namespace ToDoApp.Helpers
         public static int GetWeekOfMonth(this DateTime time)
         {
             DateTime first = new(time.Year, time.Month, 1);
+
             return time.GetWeekOfYear() - first.GetWeekOfYear();
         }
 
