@@ -27,7 +27,7 @@
     <StackPanel>
         <TextBox Text="{Binding Ticks}"/>
 
-        <StackPanel Orientation="Horizontal" Margin="5">
+        <!--<StackPanel Orientation="Horizontal" Margin="5">
             <StackPanel Margin="5 0">
                 <TextBlock Text="Угол слева"/>
                 <TextBox Text="{Binding LeftAngle}" Width="100"/>
@@ -133,7 +133,7 @@
                     <view:RotaryControlSegment Fill="Crimson" AngleInDegrees="30"/>
                 </x:Array>
             </view:RotaryControl.Segments>
-        </view:RotaryControl>
+        </view:RotaryControl>-->
 
         <ContentControl Content="{Binding SelectedViewModel}"/>
     </StackPanel>

@@ -62,7 +62,6 @@ namespace ToDoApp.Models
                 {
                     return;
                 }
-                Debug.WriteLine("desc changed");
                 _description = value;
                 OnPropertyChanged();
 

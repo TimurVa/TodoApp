@@ -65,7 +65,7 @@ namespace ToDoApp.ViewModels
             _passwordsViewModel = new PasswordsViewModel();
             _calendarViewModel = new();
 
-            SelectedViewModel = _calendarViewModel;
+            SelectedViewModel = _todoViewModel;
         }
         #endregion
 
