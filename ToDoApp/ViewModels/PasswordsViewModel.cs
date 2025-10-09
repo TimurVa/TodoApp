@@ -191,7 +191,35 @@ namespace ToDoApp.ViewModels
         {
             if (obj != null && obj is string str)
             {
-                Clipboard.SetText(str);
+                CopyToClipboardSafely(str);
+            }
+        }
+
+        public static void CopyToClipboardSafely(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return;
+
+            int retryCount = 0;
+            bool success = false;
+
+            while (!success && retryCount < 10)
+            {
+                try
+                {
+                    Clipboard.SetText(text);
+                    success = true;
+                }
+                catch (System.Runtime.InteropServices.COMException)
+                {
+                    retryCount++;
+                    if (retryCount >= 10)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Failed to copy to clipboard after 10 attempts");
+                        break;
+                    }
+
+                    System.Threading.Thread.Sleep(10 * retryCount);
+                }
             }
         }
         #endregion
